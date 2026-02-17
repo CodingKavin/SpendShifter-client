@@ -1,0 +1,11 @@
+@use "./fonts" as *;
+@use "./variables" as *;
+@use "./functions" as *;
+
+body {
+    font-family: $font-family-primary;
+    color: $color-primary-black;
+    background-color: $color-background-light-grey;
+    margin: 0;
+    box-sizing: border-box;
+}

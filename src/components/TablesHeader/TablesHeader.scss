@@ -1,0 +1,94 @@
+@use "../../styles/functions" as *;
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.table-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 0;
+    gap: pxToRem(16);
+    padding: pxToRem(32) pxToRem(24) pxToRem(24) pxToRem(24);
+    background-color: $color-primary-white;
+
+    @include tablet {
+        padding: pxToRem(32) pxToRem(32) pxToRem(22) pxToRem(32);
+        flex-direction: row;
+        align-items: center;
+    }
+
+    @include desktop {
+        padding: pxToRem(32) pxToRem(40) pxToRem(22) pxToRem(40);
+    }
+
+    &__title {
+        .typography--h1 {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        @include tablet {
+            flex: 0 0 40%;
+        }
+
+        @include desktop {
+            flex: 0 0 60%;
+        }
+    }
+
+    &__search {
+        width: calc(100% - pxToRem(8) - pxToRem(12));
+        position: relative;
+
+        @include tablet {
+            margin-right: pxToRem(16);
+        }
+    }
+
+    &__search-input {
+        width: 100%;
+        border-radius: pxToRem(20);
+        border: 1px solid $color-secondary-cloud;
+        padding-top: pxToRem(8);
+        padding-bottom: pxToRem(8);
+        padding-left: pxToRem(16);
+        outline: none;
+
+        &::placeholder {
+            font-size: pxToRem(13);
+            line-height: pxToRem(20);
+
+            @include tablet {
+                font-size: pxToRem(14);
+                line-height: pxToRem(22);
+            }
+        }
+    }
+
+    &__search-icon-button {
+        position: absolute;
+        right: pxToRem(6);
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+    }
+
+    &__search-icon {
+        position: absolute;
+        right: pxToRem(-12);
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    &__button {
+        width: 100%;
+
+        @include tablet {
+            width: auto;
+        }
+    }
+}

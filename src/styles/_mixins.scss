@@ -1,0 +1,17 @@
+@use "./variables" as *;
+
+@mixin tablet {
+    @media screen and (min-width: 700px) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media screen and (min-width: 1200px) {
+        @content;
+    }
+}
+
+@mixin wrapper($max-width: $max-width-md, $margin: 0 auto, $padding: 0) {
+    max-width: $max-width;
+}

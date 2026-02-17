@@ -1,0 +1,32 @@
+@use "../../styles/variables" as *;
+@use "../../styles/functions" as *;
+@use "../../styles/mixins" as *;
+
+.tag {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: pxToRem(86);
+    height: pxToRem(24);
+    padding: pxToRem(4) pxToRem(8);
+    border-radius: pxToRem(20);
+    font-weight: 600;
+    font-size: pxToRem(11);
+    line-height: pxToRem(16);
+    @include tablet {
+        width: pxToRem(92);
+        height: pxToRem(26);
+        font-size: pxToRem(12);
+        line-height: pxToRem(18);
+    }
+
+    &--in-stock {
+        background-color: #15846312;
+        color: $color-supporting-green;
+    }
+
+    &--out-of-stock {
+        background-color: #C9451512;
+        color: $color-supporting-red;
+    }
+}

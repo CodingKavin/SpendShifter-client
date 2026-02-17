@@ -1,0 +1,89 @@
+@use "../../styles/functions" as *;
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.card {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: $color-primary-white;
+    padding: pxToRem(16) pxToRem(24) pxToRem(24) pxToRem(24);
+    border-top: 1px solid $color-secondary-cloud;
+    box-shadow: 0px 2px 5px 0px rgba($color-primary-black, 0.1);
+
+    &:first-child {
+        border-top: none;
+    }
+
+    @include tablet {
+        flex-wrap: nowrap;
+        padding: pxToRem(16) pxToRem(32);
+    }
+
+    @include desktop {
+        padding: pxToRem(16) pxToRem(40);
+    }
+
+    &__field {
+        display: flex;
+        flex-direction: column;
+        width: calc(50% - 8px - 22.5px);
+        box-sizing: border-box;
+        gap: pxToRem(4);
+
+        @include tablet {
+            flex: 1 1 0;
+            min-width: 0;
+        }
+    }
+
+    &__label {
+        margin: 0;
+
+        @include tablet {
+            display: none;
+        }
+    }
+
+    &__value {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        margin: 0;
+        padding: 0;
+        gap: 0;
+    }
+
+    &__actions {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+
+        @include tablet {
+            flex: 0.75 1 0;
+            min-width: 0;
+            justify-content: center;
+            gap: pxToRem(16);
+        }
+    }
+
+    &__icon-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            opacity: 0.75;
+        }
+    }
+
+    &__delete-button {
+        all: unset;
+        cursor: pointer;
+    }
+
+    &__value-text {
+        margin: 0;
+    }
+}

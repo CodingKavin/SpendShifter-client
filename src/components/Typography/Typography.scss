@@ -1,0 +1,68 @@
+@use "../../styles/variables" as *;
+@use "../../styles/functions" as *;
+@use "../../styles/mixins" as *;
+
+.typography {
+    &--h1 {
+        font-size: pxToRem(28);
+        line-height: pxToRem(36);
+        @include tablet {
+            font-size: pxToRem(32);
+            line-height: pxToRem(40);
+        }
+    }
+
+    &--h2 {
+        font-size: pxToRem(20);
+        line-height: pxToRem(28);
+        @include tablet {
+            font-size: pxToRem(24);
+            line-height: pxToRem(32);
+        }
+    }
+
+    &--h3 {
+        font-size: pxToRem(13);
+        line-height: pxToRem(20);
+        @include tablet {
+            font-size: pxToRem(14);
+            line-height: pxToRem(22);
+        }
+    }
+
+    &--h4 {
+        font-size: pxToRem(11);
+        line-height: pxToRem(16);
+        @include tablet {
+            font-size: pxToRem(12);
+            line-height: pxToRem(18);
+        }
+    }
+
+    &--p1 {
+        font-size: pxToRem(15);
+        line-height: pxToRem(26);
+        @include tablet {
+            font-size: pxToRem(16);
+            line-height: pxToRem(28);
+        }
+    }
+
+    &--p2 {
+        font-size: pxToRem(13);
+        line-height: pxToRem(20);
+        @include tablet {
+            font-size: pxToRem(14);
+            line-height: pxToRem(22);
+        }
+    }
+
+    &--p3 {
+        font-size: pxToRem(11);
+        line-height: pxToRem(16);
+        @include tablet {
+            font-size: pxToRem(12);
+            line-height: pxToRem(18);
+        }
+    }
+}

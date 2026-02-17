@@ -1,0 +1,17 @@
+@use "../../styles/variables" as *;
+@use "../../styles/functions" as *;
+@use "../../styles/mixins" as *;
+
+.footer {
+  // position: fixed;
+  left: 0;
+  bottom: 18px;
+  width: 100%;
+  text-align: center;
+
+  &__copy {
+    font-size: 12px;
+    font-weight: 400;
+    color: $color-secondary-slate;
+  }
+}
