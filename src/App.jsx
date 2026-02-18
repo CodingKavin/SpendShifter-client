@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { fetchUpdate } from "./utils/apiRequests.js";
 import Navigation from "./components/Navigation/Navigation.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import LandingPage from "./pages/LandingPage/LandingPage.jsx";
