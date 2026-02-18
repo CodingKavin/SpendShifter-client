@@ -6,7 +6,7 @@ const PublicOnlyRoute = ({ children }) => {
     const { isAuthenticated, loading } = useAuth();
 
     if (loading) {
-        return <Typography className="loading-text" variant="p2" style={{ padding: "16px" }}>Loading...</Typography>
+        return <div className="loading-text"><Typography variant="p2">Loading...</Typography></div>;
     }
     if (isAuthenticated) {
         return <Navigate to="/dashboard" replace />;

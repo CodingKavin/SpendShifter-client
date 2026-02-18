@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext.jsx";
+import { Link } from "react-router-dom";
 import Typography from "../../components/Typography/Typography.jsx";
 import Input from "../../components/Input/Input.jsx";
 import Button from "../../components/Button/Button.jsx";
+import logo from "../../assets/Logo/SpendSavant_logo.svg";
+import "./LoginPage.scss"
 
 const LoginPage = () => {
     const { login } = useAuth();
@@ -27,7 +30,7 @@ const LoginPage = () => {
 
     return (
         <div className="login">
-            <Typography variant="h2" className="login__header">Login</Typography>
+            <Typography variant="h2" className="login__header">Welcome to SpendSavant!</Typography>
 
             {error && (
                 <Typography variant="p2" className="login__error">
@@ -36,6 +39,9 @@ const LoginPage = () => {
             )}
 
             <form onSubmit={handleSubmit} className="login__form">
+                <div className="login__icon-wrapper">
+                    <img src={logo} alt="SpendSavant Logo" className="login__icon" />
+                </div>
                 <Input
                     type="email"
                     placeholder="Email"
@@ -53,13 +59,23 @@ const LoginPage = () => {
                     required
                 />
                 <div className="login__button-wrapper">
-                    <Button type="button" variant="secondary" disabled={submitting} className="login__button">
-                        <Typography variant="p2">Sign Up</Typography>
-                    </Button>
-                    <Button type="submit" variant="primary" disabled={submitting} className="login__button">
+                    <Button
+                        type="submit"
+                        variant="primary"
+                        disabled={submitting}
+                        className="login__button"
+                    >
                         <Typography variant="p2">Login</Typography>
                     </Button>
+
+                    <Typography variant="p2" className="login__signup-text">
+                        Don’t have an account?{" "}
+                        <Link to="/register" className="login__signup-link">
+                            Sign up here
+                        </Link>
+                    </Typography>
                 </div>
+
             </form>
         </div>
     );

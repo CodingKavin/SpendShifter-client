@@ -10,12 +10,13 @@ import LoginPage from "./pages/LoginPage/LoginPage.jsx";
 // import ExpensesPage from "./pages/ExpensesPage/ExpensesPage.jsx";
 // import ChartsPage from "./pages/ChartsPage/ChartsPage.jsx";
 import Typography from "./components/Typography/Typography.jsx";
+import "./App.scss"
 
 const App = () => {
 
     const HomeRedirect = () => {
         const { isAuthenticated, loading } = useAuth();
-        if (loading) return <Typography className="loading-text" variant="p2" style={{ padding: "16px" }}>Loading...</Typography>;
+        if (loading) return <div className="loading-text"><Typography variant="p2">Loading...</Typography></div>;
         return isAuthenticated
             ? <Navigate to="/dashboard" replace />
             : <Navigate to="/login" replace />;
