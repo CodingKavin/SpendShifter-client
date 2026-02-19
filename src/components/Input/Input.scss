@@ -29,6 +29,10 @@
 
     &--error {
         border: 1px solid $color-supporting-red;
+
+        &:focus {
+            border: 1px solid $color-supporting-red;
+        }
     }
 
     @include tablet {
@@ -42,16 +46,11 @@
         cursor: not-allowed;
         color: $color-secondary-slate;
     }
-}
 
-.input-error-message {
-    margin-top: pxToRem(4);
-    font-size: pxToRem(12);
-    line-height: pxToRem(16);
-    color: $color-supporting-red;
-    display: none;
-
-    &.visible {
-        display: block;
+    &__error-msg {
+        font-size: pxToRem(12);
+        color: $color-supporting-red;
+        margin-top: pxToRem(4);
+        margin-left: pxToRem(16);
     }
 }

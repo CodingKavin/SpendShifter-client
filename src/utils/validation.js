@@ -1,7 +1,7 @@
 export const validateName = (name) => {
     if (!name.trim()) return "Name is required";
     const regex = /^[\p{L}][\p{L}\s'-]{1,49}$/u;
-    if (!regex.test(name)) return "Name contains Invalid Characters";
+    if (!regex.test(name)) return "Invalid Name";
     return "";
 };
 

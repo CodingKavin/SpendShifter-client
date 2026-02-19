@@ -1,30 +1,76 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext.jsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Typography from "../../components/Typography/Typography.jsx";
 import Input from "../../components/Input/Input.jsx";
 import Button from "../../components/Button/Button.jsx";
 import logo from "../../assets/Logo/SpendSavant_logo.svg";
+import { validateName, validateEmail, validatePassword, validateConfirmPassword } from "../../utils/validation.js";
 import "./SignupPage.scss";
 
 const SignupPage = () => {
     const { signup } = useAuth();
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [error, setError] = useState(null);
+    const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: ""
+    });
+    const [errors, setErrors] = useState({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: ""
+    })
     const [submitting, setSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState("");
+
+    const handleChange = (field, value) => {
+        setFormData((prev) => ({ ...prev, [field]: value }));
+
+        let error = "";
+        if (field === "name") error = validateName(value);
+        if (field === "email") error = validateEmail(value);
+        if (field === "password") error = validatePassword(value);
+        if (field === "confirmPassword") error = validateConfirmPassword(formData.password, value);
+
+        setErrors((prev) => ({ ...prev, [field]: error }));
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSubmitting(true);
-        setError(null);
+        setSubmitError("");
+
+        const nameError = validateName(formData.name);
+        const emailError = validateEmail(formData.email);
+        const passwordError = validatePassword(formData.password);
+        const confirmPasswordError = validateConfirmPassword(formData.password, formData.confirmPassword)
+
+        const newErrors = {
+            name: nameError,
+            email: emailError,
+            password: passwordError,
+            confirmPassword: confirmPasswordError
+        };
+
+        setErrors(newErrors);
+
+        if (Object.values(newErrors).some((err) => err)) {
+            setSubmitting(false);
+            return;
+        };
 
         try {
-            await signup({ name, email, password, confirmPassword });
+            await signup({
+                name: formData.name.trim(),
+                email: formData.email.trim(),
+                password: formData.password
+            });
+            navigate("/")
         } catch (err) {
-            setError(err.message || "Something went wrong");
+            setSubmitError(err)
         } finally {
             setSubmitting(false);
         }
@@ -36,9 +82,9 @@ const SignupPage = () => {
                 Create Your Account
             </Typography>
 
-            {error && (
+            {submitError && (
                 <Typography variant="p2" className="signup__error">
-                    {error}
+                    {submitError}
                 </Typography>
             )}
 
@@ -51,32 +97,36 @@ const SignupPage = () => {
                     type="text"
                     placeholder="Full Name"
                     className="signup__form-input"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    value={formData.name}
+                    onChange={(e) => handleChange("name", e.target.value)}
+                    error={errors.name}
                     required
                 />
                 <Input
                     type="email"
                     placeholder="Email"
                     className="signup__form-input"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={formData.email}
+                    onChange={(e) => handleChange("email", e.target.value)}
+                    error={errors.email}
                     required
                 />
                 <Input
                     type="password"
                     placeholder="Password"
                     className="signup__form-input"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={formData.password}
+                    onChange={(e) => handleChange("password", e.target.value)}
+                    error={errors.password}
                     required
                 />
                 <Input
                     type="password"
                     placeholder="Confirm Password"
                     className="signup__form-input"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    value={formData.confirmPassword}
+                    onChange={(e) => handleChange("confirmPassword", e.target.value)}
+                    error={errors.confirmPassword}
                     required
                 />
 

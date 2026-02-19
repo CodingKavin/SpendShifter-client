@@ -6,6 +6,7 @@ const Input = ({
     value,
     onChange,
     className = "",
+    error = "",
     disabled = false,
     ...props
 }) => {
@@ -34,13 +35,14 @@ const Input = ({
             {label && <label className="input-label">{label}</label>}
             <input
                 type={type}
-                className={combinedClassName}
+                className={`${combinedClassName} ${error ? "input--error" : ""}`}
                 placeholder={placeholder}
                 value={value}
                 onChange={onChange}
                 disabled={disabled}
                 {...props}
             />
+            <p className="input__error-msg">{error}</p>
         </div>
     );
 };
