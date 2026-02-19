@@ -4,7 +4,7 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
 import PublicOnlyRoute from "./components/PublicOnlyRoute/PublicOnlyRoute.jsx";
 // import Navigation from "./components/Navigation/Navigation.jsx";
 import Footer from "./components/Footer/Footer.jsx";
-// import RegisterPage from "./pages/RegisterPage/RegisterPage.jsx";
+import SignupPage from "./pages/SignupPage/SignupPage.jsx";
 import LoginPage from "./pages/LoginPage/LoginPage.jsx";
 // import DashboardPage from "./pages/DashboardPage/DashboardPage.jsx";
 // import ExpensesPage from "./pages/ExpensesPage/ExpensesPage.jsx";
@@ -30,7 +30,7 @@ const App = () => {
                 <main>
                     <Routes>
                         <Route path="/" element={<HomeRedirect />} />
-                        {/* <Route path="/register" element={<PublicOnlyRoute><RegisterPage /></PublicOnlyRoute>} /> */}
+                        <Route path="/signup" element={<PublicOnlyRoute><SignupPage /></PublicOnlyRoute>} />
                         <Route path="/login" element={<PublicOnlyRoute><LoginPage /></PublicOnlyRoute>} />
                         {/* <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
                         <Route path="/expenses" element={<ProtectedRoute><ExpensesPage /></ProtectedRoute>} />

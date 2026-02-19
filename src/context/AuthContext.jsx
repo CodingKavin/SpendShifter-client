@@ -37,6 +37,15 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(false);
     };
 
+    const signup = async (userData) => {
+        try {
+            await api.post("/auth/signup", userData)
+            await validateUser();
+        } catch (error) {
+            throw error.response?.data?.message || "Signup failed";
+        }
+    }
+
     useEffect(() => {
         validateUser();
     }, []); //keeps user logged in on refresh
@@ -49,6 +58,7 @@ export const AuthProvider = ({ children }) => {
                 loading,
                 login,
                 logout,
+                signup
             }}
         >
             {children}
