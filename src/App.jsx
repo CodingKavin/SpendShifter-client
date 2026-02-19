@@ -29,8 +29,8 @@ const App = () => {
                 {/* <Navigation /> */}
                 <main>
                     <Routes>
-                        {/* <Route path="/" element={<HomeRedirect />} />
-                        <Route path="/register" element={<PublicOnlyRoute><RegisterPage /></PublicOnlyRoute>} /> */}
+                        <Route path="/" element={<HomeRedirect />} />
+                        {/* <Route path="/register" element={<PublicOnlyRoute><RegisterPage /></PublicOnlyRoute>} /> */}
                         <Route path="/login" element={<PublicOnlyRoute><LoginPage /></PublicOnlyRoute>} />
                         {/* <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
                         <Route path="/expenses" element={<ProtectedRoute><ExpensesPage /></ProtectedRoute>} />
