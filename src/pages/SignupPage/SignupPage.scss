@@ -93,4 +93,27 @@
             object-fit: contain;
         }
     }
+
+    &__success-wrapper {
+        width: 100%;
+        max-width: pxToRem(300);
+        margin: pxToRem(24) auto 0;
+        padding: pxToRem(16) pxToRem(20);
+        border: 1px solid $color-supporting-green;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+        @include tablet {
+            max-width: pxToRem(400);
+        }
+    }
+
+    &__success {
+        color: $color-supporting-green;
+        font-weight: 500;
+    }
 }

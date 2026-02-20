@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext.jsx";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Typography from "../../components/Typography/Typography.jsx";
 import Input from "../../components/Input/Input.jsx";
 import Button from "../../components/Button/Button.jsx";
@@ -10,7 +10,6 @@ import "./SignupPage.scss";
 
 const SignupPage = () => {
     const { signup } = useAuth();
-    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -25,6 +24,8 @@ const SignupPage = () => {
     })
     const [submitting, setSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
+    const successRef = useRef(null);
 
     const handleChange = (field, value) => {
         setFormData((prev) => ({ ...prev, [field]: value }));
@@ -64,17 +65,26 @@ const SignupPage = () => {
 
         try {
             await signup({
-                name: formData.name.trim(),
                 email: formData.email.trim(),
-                password: formData.password
+                password: formData.password,
+                options: {
+                    data: { full_name: formData.name.trim() }
+                }
             });
-            navigate("/")
+            setFormData({ name: "", email: "", password: "", confirmPassword: "" });
+            setSuccessMessage("Account created! Verify email before logging in.");
         } catch (err) {
-            setSubmitError(err)
+            setSubmitError(err.message || "Signup failed");
         } finally {
             setSubmitting(false);
         }
     };
+
+    useEffect(() => {
+        if (successMessage && successRef.current) {
+            successRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    }, [successMessage]);
 
     return (
         <div className="signup">
@@ -86,6 +96,17 @@ const SignupPage = () => {
                 <Typography variant="p2" className="signup__error">
                     {submitError}
                 </Typography>
+            )}
+
+            {successMessage && (
+                <div className="signup__success-wrapper" ref={successRef}>
+                    <Typography variant="p2" className="signup__success">
+                        {successMessage}{" "}
+                        <Link to="/login" className="signup__login-link">
+                            Log in here
+                        </Link>
+                    </Typography>
+                </div>
             )}
 
             <form onSubmit={handleSubmit} className="signup__form">

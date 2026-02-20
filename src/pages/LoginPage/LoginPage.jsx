@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext.jsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Typography from "../../components/Typography/Typography.jsx";
 import Input from "../../components/Input/Input.jsx";
 import Button from "../../components/Button/Button.jsx";
@@ -13,6 +13,7 @@ const LoginPage = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
     const [submitting, setSubmitting] = useState(null);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,8 +22,9 @@ const LoginPage = () => {
 
         try {
             await login({ email, password });
+            navigate("/dashboard");
         } catch (error) {
-            setError(err);
+            setError(error.message || "Login failed");
         } finally {
             setSubmitting(false);
         }

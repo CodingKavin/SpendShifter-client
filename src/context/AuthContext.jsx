@@ -1,66 +1,68 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import api from "../utils/axios.js";
+import { supabase } from "../utils/supabase.js";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    const validateUser = async () => {
-        try {
-            const response = await api.get("/auth/validate");
-            setUser(response.data.user);
-            setIsAuthenticated(true);
-        } catch (error) {
-            setUser(null);
-            setIsAuthenticated(false);
-        } finally {
+    useEffect(() => {
+        supabase.auth.getSession().then(({ data }) => {
+            const currentUser = data.session?.user || null;
+            setUser(currentUser);
+            setIsAuthenticated(!!currentUser);
             setLoading(false);
-        }
+        });
+
+        const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+            const currentUser = session?.user || null;
+            setUser(currentUser);
+            setIsAuthenticated(!!currentUser);
+        });
+
+        return () => listener.subscription.unsubscribe();
+    }, []);
+
+    const signup = async ({ email, password, options = {} }) => {
+        const { data, error } = await supabase.auth.signUp({ email, password, ...options });
+        if (error) throw error;
+        setUser(data.user);
+        return data.user;
     };
 
-    const login = async (credentials) => {
-        try {
-            await api.post("/auth/login", credentials);
-            await validateUser();
-        } catch (error) {
-            throw error.response?.data?.message || "Login failed";
-        }
+    const login = async ({ email, password }) => {
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        setUser(data.user);
+        setIsAuthenticated(!!data.user);
+        return data.user;
     };
 
     const logout = async () => {
-        await api.post("/auth/logout");
-
+        await supabase.auth.signOut();
         setUser(null);
         setIsAuthenticated(false);
     };
 
-    const signup = async (userData) => {
-        try {
-            await api.post("/auth/signup", userData)
-            await validateUser();
-        } catch (error) {
-            throw error.response?.data?.message || "Signup failed";
-        }
-    }
+    const resetPassword = async (email) => {
+        const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin + "/update-password",
+        });
+        if (error) throw error;
+        return data;
+    };
 
+
+    // *** needs to be removed temporarily added until logout is implemented in app for testing
     useEffect(() => {
-        validateUser();
-    }, []); //keeps user logged in on refresh
+        window.logout = logout;
+    }, []);
+    // *** 
 
     return (
-        <AuthContext.Provider
-            value={{
-                isAuthenticated,
-                user,
-                loading,
-                login,
-                logout,
-                signup
-            }}
-        >
+        <AuthContext.Provider value={{ user, isAuthenticated, loading, signup, login, logout, resetPassword }}>
             {children}
         </AuthContext.Provider>
     );
