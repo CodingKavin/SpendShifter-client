@@ -1,0 +1,49 @@
+@use "../../styles/variables" as *;
+@use "../../styles/functions" as *;
+@use "../../styles/mixins" as *;
+
+.navbar {
+
+    height: pxToRem(64);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 pxToRem(24);
+    background-color: $color-background-graphite;
+
+    &__left {
+        a {
+            display: flex;
+            align-items: center;
+            gap: pxToRem(8);
+            text-decoration: none;
+        }
+    }
+
+    &__icon-wrapper {
+        width: pxToRem(40);
+        height: pxToRem(40);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+    }
+
+    &__icon {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+        filter: drop-shadow(0 2px 1px rgba(255, 255, 255, 0.3)) drop-shadow(0 0 4px rgba(0, 0, 0, 0.3));
+    }
+
+    &__brand {
+        color: $color-primary-white;
+    }
+
+    &__center {}
+
+    &__right {}
+
+
+}

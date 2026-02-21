@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext.jsx";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
 import PublicOnlyRoute from "./components/PublicOnlyRoute/PublicOnlyRoute.jsx";
-// import Navigation from "./components/Navigation/Navigation.jsx";
+import Navigation from "./components/Navigation/Navigation.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import SignupPage from "./pages/SignupPage/SignupPage.jsx";
 import LoginPage from "./pages/LoginPage/LoginPage.jsx";
@@ -26,7 +26,7 @@ const App = () => {
     return (
         <AuthProvider>
             <BrowserRouter>
-                {/* <Navigation /> */}
+                <Navigation />
                 <main>
                     <Routes>
                         <Route path="/" element={<HomeRedirect />} />

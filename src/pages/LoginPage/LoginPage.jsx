@@ -32,7 +32,7 @@ const LoginPage = () => {
 
     return (
         <div className="login">
-            <Typography variant="h2" className="login__header">Welcome to SpendSavant!</Typography>
+            <Typography variant="h2" className="login__header">Welcome!</Typography>
 
             {error && (
                 <Typography variant="p2" className="login__error">
