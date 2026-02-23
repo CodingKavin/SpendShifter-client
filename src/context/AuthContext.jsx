@@ -54,13 +54,6 @@ export const AuthProvider = ({ children }) => {
         return data;
     };
 
-
-    // *** needs to be removed temporarily added until logout is implemented in app for testing
-    useEffect(() => {
-        window.logout = logout;
-    }, []);
-    // *** 
-
     return (
         <AuthContext.Provider value={{ user, isAuthenticated, loading, signup, login, logout, resetPassword }}>
             {children}
