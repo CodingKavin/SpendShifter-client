@@ -52,14 +52,22 @@ const LoginPage = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                 />
-                <Input
-                    type="password"
-                    placeholder="Password"
-                    className="login__form-input"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
+                <div>
+                    <Input
+                        type="password"
+                        placeholder="Password"
+                        className="login__form-input"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                    <Typography variant="p2" className="login__forgot-text">
+                        <Link to="/forgot-password" className="login__forgot-link">
+                            Forgot your password?
+                        </Link>
+                    </Typography>
+                </div>
+
                 <div className="login__button-wrapper">
                     <Button
                         type="submit"
@@ -72,7 +80,7 @@ const LoginPage = () => {
 
                     <Typography variant="p2" className="login__signup-text">
                         Don’t have an account?{" "}
-                        <Link to="/register" className="login__signup-link">
+                        <Link to="/signup" className="login__signup-link">
                             Sign up here
                         </Link>
                     </Typography>
