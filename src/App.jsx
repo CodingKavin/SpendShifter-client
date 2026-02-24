@@ -7,6 +7,7 @@ import Footer from "./components/Footer/Footer.jsx";
 import SignupPage from "./pages/SignupPage/SignupPage.jsx";
 import LoginPage from "./pages/LoginPage/LoginPage.jsx";
 import ForgotPassPage from "./pages/ForgotPassPage/ForgotPassPage.jsx";
+import UpdatePassPage from "./pages/UpdatePassPage/UpdatePassPage.jsx";
 // import DashboardPage from "./pages/DashboardPage/DashboardPage.jsx";
 // import ExpensesPage from "./pages/ExpensesPage/ExpensesPage.jsx";
 // import ChartsPage from "./pages/ChartsPage/ChartsPage.jsx";
@@ -34,6 +35,7 @@ const App = () => {
                         <Route path="/signup" element={<PublicOnlyRoute><SignupPage /></PublicOnlyRoute>} />
                         <Route path="/login" element={<PublicOnlyRoute><LoginPage /></PublicOnlyRoute>} />
                         <Route path="/forgot-password" element={<PublicOnlyRoute><ForgotPassPage /></PublicOnlyRoute>} />
+                        <Route path="/update-password" element={<PublicOnlyRoute><UpdatePassPage /></PublicOnlyRoute>} />
                         {/* <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
                         <Route path="/expenses" element={<ProtectedRoute><ExpensesPage /></ProtectedRoute>} />
                         <Route path="/charts" element={<ProtectedRoute><ChartsPage /></ProtectedRoute>} /> */}

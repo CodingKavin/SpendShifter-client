@@ -99,14 +99,12 @@ const SignupPage = () => {
             )}
 
             {successMessage && (
-                <div className="signup__success-wrapper" ref={successRef}>
-                    <Typography variant="p2" className="signup__success">
-                        {successMessage}{" "}
-                        <Link to="/login" className="signup__login-link">
-                            Log in here
-                        </Link>
-                    </Typography>
-                </div>
+                <Typography variant="p2" className="signup__success">
+                    {successMessage}{" "}
+                    <Link to="/login" className="signup__login-link">
+                        Log in here
+                    </Link>
+                </Typography>
             )}
 
             <form onSubmit={handleSubmit} className="signup__form">
