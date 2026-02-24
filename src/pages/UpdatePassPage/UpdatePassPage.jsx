@@ -10,7 +10,7 @@ import { supabase } from "../../utils/supabase.js";
 import "./UpdatePassPage.scss";
 
 const UpdatePassPage = () => {
-    const { updatePassword } = useAuth();
+    const { updatePassword, logout } = useAuth();
     const [formData, setFormData] = useState({
         password: "",
         confirmPassword: ""
@@ -27,16 +27,15 @@ const UpdatePassPage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const checkSession = async () => {
-            const { data } = await supabase.auth.getSession();
-            if (!data.session) {
-                navigate("/login");
-            } else {
+        const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+            if (event === "PASSWORD_RECOVERY" && session) {
                 setValidSession(true);
+            } else {
+                navigate("/login")
             }
-        };
+        });
 
-        checkSession();
+        return () => listener.subscription.unsubscribe();
     }, [navigate]);
 
     const handleChange = (field, value) => {
@@ -75,10 +74,11 @@ const UpdatePassPage = () => {
 
         try {
             await updatePassword(formData.password);
-            setSuccessMessage("Password updated successfully!");
+            setSuccessMessage("Password updated successfully! You will be redirected to login");
 
-            setTimeout(() => {
-                navigate("/dashboard");
+            setTimeout(async () => {
+                await logout();
+                navigate("/login");
             }, 2000);
         } catch (error) {
             setSubmitError(error.message || "Failed to update password.")
