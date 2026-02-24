@@ -40,14 +40,15 @@ const UpdatePassPage = () => {
     }, [navigate]);
 
     const handleChange = (field, value) => {
-        setFormData((prev) => ({ ...prev, [field]: value }));
+        const updatedData = { ...formData, [field]: value };
+        setFormData(updatedData);
 
         let error = "";
         if (field === "password") {
             error = validatePassword(value);
         }
         if (field === "confirmPassword") {
-            error = validateConfirmPassword(formData.password, value);
+            error = validateConfirmPassword(updatedData.password, updatedData.confirmPassword);
         }
         setErrors((prev) => ({ ...prev, [field]: error }));
     }
@@ -73,7 +74,7 @@ const UpdatePassPage = () => {
         }
 
         try {
-            await updatePassword(password);
+            await updatePassword(formData.password);
             setSuccessMessage("Password updated successfully!");
 
             setTimeout(() => {
@@ -111,7 +112,7 @@ const UpdatePassPage = () => {
                 <Input
                     type="password"
                     placeholder="Password"
-                    className="signup__form-input"
+                    className="update-password__form-input"
                     value={formData.password}
                     onChange={(e) => handleChange("password", e.target.value)}
                     error={errors.password}
@@ -120,7 +121,7 @@ const UpdatePassPage = () => {
                 <Input
                     type="password"
                     placeholder="Confirm Password"
-                    className="signup__form-input"
+                    className="update-password__form-input"
                     value={formData.confirmPassword}
                     onChange={(e) => handleChange("confirmPassword", e.target.value)}
                     error={errors.confirmPassword}
@@ -130,7 +131,7 @@ const UpdatePassPage = () => {
                     type="submit"
                     variant="primary"
                     disabled={submitting}
-                    className="signup__button"
+                    className="update-password__button"
                 >
                     <Typography variant="p2">Submit</Typography>
                 </Button>
