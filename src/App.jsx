@@ -10,7 +10,6 @@ import ForgotPassPage from "./pages/ForgotPassPage/ForgotPassPage.jsx";
 import UpdatePassPage from "./pages/UpdatePassPage/UpdatePassPage.jsx";
 // import DashboardPage from "./pages/DashboardPage/DashboardPage.jsx";
 // import ExpensesPage from "./pages/ExpensesPage/ExpensesPage.jsx";
-// import ChartsPage from "./pages/ChartsPage/ChartsPage.jsx";
 import Typography from "./components/Typography/Typography.jsx";
 import "./App.scss"
 
@@ -37,8 +36,7 @@ const App = () => {
                         <Route path="/forgot-password" element={<PublicOnlyRoute><ForgotPassPage /></PublicOnlyRoute>} />
                         <Route path="/update-password" element={<PublicOnlyRoute><UpdatePassPage /></PublicOnlyRoute>} />
                         {/* <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
-                        <Route path="/expenses" element={<ProtectedRoute><ExpensesPage /></ProtectedRoute>} />
-                        <Route path="/charts" element={<ProtectedRoute><ChartsPage /></ProtectedRoute>} /> */}
+                        <Route path="/expenses" element={<ProtectedRoute><ExpensesPage /></ProtectedRoute>} /> */}
                     </Routes>
                 </main>
 

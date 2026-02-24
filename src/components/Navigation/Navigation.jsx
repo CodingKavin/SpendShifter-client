@@ -9,7 +9,7 @@ import "./Navigation.scss"
 const Navigation = () => {
 
     const navigate = useNavigate();
-    const { logout } = useAuth();
+    const { logout, isAuthenticated } = useAuth();
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -26,13 +26,13 @@ const Navigation = () => {
     return (
         <nav className="navbar">
             <div className="navbar__left">
-                <Link to="/dashboard">
+                <Link to={isAuthenticated ? "/dashboard" : "/login"}>
                     <div className="navbar__icon-wrapper">
                         <img src={logo} alt="SpendSavant Logo" className="navbar__icon" />
                     </div>
                     <Typography variant="h2" className="navbar__brand">SpendSavant</Typography>
                 </Link>
-                <div className="navbar__profile navbar__profile--mobile">
+                {isAuthenticated && <div className="navbar__profile navbar__profile--mobile">
                     <button className="navbar__icon-wrapper navbar__profile-btn"
                         onClick={toggleDropDown}>
                         <img src={profile} alt="SpendSavant Logo" className="navbar__icon navbar__icon--profile" />
@@ -45,9 +45,9 @@ const Navigation = () => {
                             </button>
                         </div>
                     )}
-                </div>
+                </div>}
             </div>
-            <div className="navbar__center">
+            {isAuthenticated && <div className="navbar__center">
                 <NavLink
                     to="/dashboard"
                     className={({ isActive }) =>
@@ -67,8 +67,8 @@ const Navigation = () => {
                 >
                     <Typography variant="p2" className="navbar__brand">Expenses</Typography>
                 </NavLink>
-            </div>
-            <div className="navbar__right">
+            </div>}
+            {isAuthenticated && <div className="navbar__right">
                 <div className="navbar__profile navbar__profile--tablet">
                     <button className="navbar__icon-wrapper navbar__profile-btn"
                         onClick={toggleDropDown}>
@@ -83,7 +83,7 @@ const Navigation = () => {
                         </div>
                     )}
                 </div>
-            </div>
+            </div>}
         </nav>
     );
 }
