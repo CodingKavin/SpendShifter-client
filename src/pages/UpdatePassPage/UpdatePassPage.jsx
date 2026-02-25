@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Typography from "../../components/Typography/Typography.jsx";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button.jsx";
-import logo from "../../assets/Logo/SpendSavant_logo.svg";
+import logo from "../../assets/Logo/SpendShifter_logo.svg";
 import { validatePassword, validateConfirmPassword } from "../../utils/validation.js";
 import { supabase } from "../../utils/supabase.js";
 import "./UpdatePassPage.scss";
@@ -106,7 +106,7 @@ const UpdatePassPage = () => {
             )}
             <form onSubmit={handleSubmit} className="update-password__form">
                 <div className="update-password__icon-wrapper">
-                    <img src={logo} alt="SpendSavant Logo" className="update-password__icon" />
+                    <img src={logo} alt="SpendShifter Logo" className="update-password__icon" />
                 </div>
 
                 <Input

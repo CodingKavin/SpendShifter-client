@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Typography from "../../components/Typography/Typography.jsx";
 import Input from "../../components/Input/Input.jsx";
 import Button from "../../components/Button/Button.jsx";
-import logo from "../../assets/Logo/SpendSavant_logo.svg";
+import logo from "../../assets/Logo/SpendShifter_logo.svg";
 import "./ForgotPassPage.scss";
 
 
@@ -40,7 +40,7 @@ const ForgotPassPage = () => {
 
             <form onSubmit={handleSubmit} className="forgot-password__form">
                 <div className="forgot-password__icon-wrapper">
-                    <img src={logo} alt="SpendSavant Logo" className="forgot-password__icon" />
+                    <img src={logo} alt="SpendShifter Logo" className="forgot-password__icon" />
                 </div>
                 <Input
                     type="email"

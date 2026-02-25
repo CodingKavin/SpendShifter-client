@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Typography from "../../components/Typography/Typography.jsx";
 import Input from "../../components/Input/Input.jsx";
 import Button from "../../components/Button/Button.jsx";
-import logo from "../../assets/Logo/SpendSavant_logo.svg";
+import logo from "../../assets/Logo/SpendShifter_logo.svg";
 import "./LoginPage.scss"
 
 const LoginPage = () => {
@@ -42,7 +42,7 @@ const LoginPage = () => {
 
             <form onSubmit={handleSubmit} className="login__form">
                 <div className="login__icon-wrapper">
-                    <img src={logo} alt="SpendSavant Logo" className="login__icon" />
+                    <img src={logo} alt="SpendShifter Logo" className="login__icon" />
                 </div>
                 <Input
                     type="email"

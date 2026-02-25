@@ -5,7 +5,7 @@ const Footer = () => {
     return (
         <footer className="footer">
             <Typography variant="p" className="footer__copy">
-                &copy; SpendSavant Inc. All Rights Reserved.
+                &copy; SpendShifter Inc. All Rights Reserved.
             </Typography>
         </footer>
     )

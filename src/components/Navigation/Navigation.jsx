@@ -2,7 +2,7 @@ import { Link, useNavigate, NavLink } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext.jsx";
 import Typography from "../Typography/Typography.jsx";
-import logo from "../../assets/Logo/SpendSavant_logo.svg";
+import logo from "../../assets/Logo/SpendShifter_logo.svg";
 import profile from "../../assets/Icons/profile.svg";
 import "./Navigation.scss"
 
@@ -54,14 +54,14 @@ const Navigation = () => {
             <div className="navbar__left">
                 <Link to={isAuthenticated ? "/dashboard" : "/login"}>
                     <div className="navbar__icon-wrapper">
-                        <img src={logo} alt="SpendSavant Logo" className="navbar__icon" />
+                        <img src={logo} alt="SpendShifter Logo" className="navbar__icon" />
                     </div>
-                    <Typography variant="h2" className="navbar__brand">SpendSavant</Typography>
+                    <Typography variant="h2" className="navbar__brand">SpendShifter</Typography>
                 </Link>
                 {isAuthenticated && <div className="navbar__profile navbar__profile--mobile" ref={dropdownRef}>
                     <button className="navbar__icon-wrapper navbar__profile-btn"
                         onClick={toggleDropDown}>
-                        <img src={profile} alt="SpendSavant Logo" className="navbar__icon navbar__icon--profile" />
+                        <img src={profile} alt="SpendShifter Logo" className="navbar__icon navbar__icon--profile" />
                     </button>
                     {isOpen && (
                         <div className="navbar__dropdown">
@@ -98,7 +98,7 @@ const Navigation = () => {
                 <div className="navbar__profile navbar__profile--tablet" ref={dropdownRef}>
                     <button className="navbar__icon-wrapper navbar__profile-btn"
                         onClick={toggleDropDown}>
-                        <img src={profile} alt="SpendSavant Logo" className="navbar__icon navbar__icon--profile" />
+                        <img src={profile} alt="SpendShifter Logo" className="navbar__icon navbar__icon--profile" />
                     </button>
                     {isOpen && (
                         <div className="navbar__dropdown">
