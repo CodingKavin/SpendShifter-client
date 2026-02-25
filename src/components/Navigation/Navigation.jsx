@@ -1,5 +1,5 @@
 import { Link, useNavigate, NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext.jsx";
 import Typography from "../Typography/Typography.jsx";
 import logo from "../../assets/Logo/SpendSavant_logo.svg";
@@ -12,6 +12,7 @@ const Navigation = () => {
     const { logout, isAuthenticated } = useAuth();
 
     const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef(null);
 
     const toggleDropDown = () => {
         setIsOpen(prev => !prev);
@@ -23,6 +24,31 @@ const Navigation = () => {
         setIsOpen(false);
     }
 
+    useEffect(() => {
+        const handlePointerDown = (event) => {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target)
+            ) {
+                setIsOpen(false);
+            }
+        };
+
+        const handleEscape = (event) => {
+            if (event.key === "Escape") {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener("pointerdown", handlePointerDown);
+        document.addEventListener("keydown", handleEscape);
+
+        return () => {
+            document.removeEventListener("pointerdown", handlePointerDown);
+            document.removeEventListener("keydown", handleEscape);
+        }
+    }, []);
+
     return (
         <nav className="navbar">
             <div className="navbar__left">
@@ -32,7 +58,7 @@ const Navigation = () => {
                     </div>
                     <Typography variant="h2" className="navbar__brand">SpendSavant</Typography>
                 </Link>
-                {isAuthenticated && <div className="navbar__profile navbar__profile--mobile">
+                {isAuthenticated && <div className="navbar__profile navbar__profile--mobile" ref={dropdownRef}>
                     <button className="navbar__icon-wrapper navbar__profile-btn"
                         onClick={toggleDropDown}>
                         <img src={profile} alt="SpendSavant Logo" className="navbar__icon navbar__icon--profile" />
@@ -69,7 +95,7 @@ const Navigation = () => {
                 </NavLink>
             </div>}
             {isAuthenticated && <div className="navbar__right">
-                <div className="navbar__profile navbar__profile--tablet">
+                <div className="navbar__profile navbar__profile--tablet" ref={dropdownRef}>
                     <button className="navbar__icon-wrapper navbar__profile-btn"
                         onClick={toggleDropDown}>
                         <img src={profile} alt="SpendSavant Logo" className="navbar__icon navbar__icon--profile" />

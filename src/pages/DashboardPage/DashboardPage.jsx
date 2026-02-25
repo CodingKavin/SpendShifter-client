@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Typography from "../../components/Typography/Typography.jsx";
-import Input from "../../components/Input/Input";
+import Input from "../../components/Input/Input.jsx";
+import SelectInput from "../../components/Input/Input.jsx";
 import Button from "../../components/Button/Button.jsx";
 import "./Dashboard.scss";
 import api from "../../utils/axios.js";
@@ -34,43 +35,49 @@ const DashboardPage = () => {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
 
+    const monthOptions = [
+        { value: "01", label: "January" },
+        { value: "02", label: "February" },
+        { value: "03", label: "March" },
+        { value: "04", label: "April" },
+        { value: "05", label: "May" },
+        { value: "06", label: "June" },
+        { value: "07", label: "July" },
+        { value: "08", label: "August" },
+        { value: "09", label: "September" },
+        { value: "10", label: "October" },
+        { value: "11", label: "November" },
+        { value: "12", label: "December" },
+    ];
+
+    const yearOptions = [
+        { value: "2026", label: "2026" },
+        { value: "2025", label: "2025" },
+        { value: "2024", label: "2024" },
+        { value: "2023", label: "2023" },
+        { value: "2022", label: "2022" },
+        { value: "2021", label: "2021" },
+        { value: "2020", label: "2020" },
+    ];
+
     return (
         <section className="dashboard">
             <div className="dashboard__header">
                 <Typography variant="h1">Dashboard</Typography>
                 <div className="dashboard__month-select">
-                    <select
+                    <SelectInput
                         value={month}
                         onChange={(e) => setMonth(e.target.value)}
+                        options={monthOptions}
                         className="dashboard__select"
-                    >
-                        <option value="1">January</option>
-                        <option value="2">February</option>
-                        <option value="3">March</option>
-                        <option value="4">April</option>
-                        <option value="5">May</option>
-                        <option value="6">June</option>
-                        <option value="7">July</option>
-                        <option value="8">August</option>
-                        <option value="9">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
-                    </select>
+                    />
 
-                    <select
+                    <SelectInput
                         value={year}
                         onChange={(e) => setYear(e.target.value)}
+                        options={yearOptions}
                         className="dashboard__select"
-                    >
-                        <option value="2026">2026</option>
-                        <option value="2025">2025</option>
-                        <option value="2024">2024</option>
-                        <option value="2023">2023</option>
-                        <option value="2022">2022</option>
-                        <option value="2021">2021</option>
-                        <option value="2020">2020</option>
-                    </select>
+                    />
                 </div>
             </div>
             <div>
