@@ -16,7 +16,7 @@
     font-size: pxToRem(13);
     line-height: pxToRem(20);
 
-    &::-webkit-input-placeholder {
+    &::placeholder {
         color: $color-secondary-slate;
     }
 
