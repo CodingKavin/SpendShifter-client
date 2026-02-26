@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useLayoutEffect } from "react";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import Typography from "../../components/Typography/Typography.jsx";
@@ -12,7 +12,8 @@ const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
-    const [submitting, setSubmitting] = useState(null);
+    const [submitting, setSubmitting] = useState(false);
+    const errorRef = useRef(null);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -24,18 +25,25 @@ const LoginPage = () => {
             await login({ email, password });
             navigate("/dashboard");
         } catch (error) {
-            setError(error.message || "Login failed");
+            const safeMessage = error?.message || error?.error_description || error?.hint || "Login failed"
+            setError(safeMessage);
         } finally {
             setSubmitting(false);
         }
     };
+
+    useLayoutEffect(() => {
+        if (error && errorRef.current) {
+            errorRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    }, [error]);
 
     return (
         <div className="login">
             <Typography variant="h2" className="login__header">Welcome!</Typography>
 
             {error && (
-                <Typography variant="p2" className="login__error">
+                <Typography ref={errorRef} variant="p2" className="login__error">
                     {error}
                 </Typography>
             )}

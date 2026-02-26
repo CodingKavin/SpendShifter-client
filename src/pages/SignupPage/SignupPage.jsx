@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useLayoutEffect } from "react";
+import { useState, useRef, useLayoutEffect } from "react";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { Link } from "react-router-dom";
 import Typography from "../../components/Typography/Typography.jsx";
@@ -74,8 +74,9 @@ const SignupPage = () => {
             });
             setFormData({ name: "", email: "", password: "", confirmPassword: "" });
             setSuccessMessage("Account created! Verify email before logging in.");
-        } catch (err) {
-            setSubmitError(err.message || "Signup failed");
+        } catch (error) {
+            const safeMessage = error?.message || error?.error_description || error?.hint || "Signup failed"
+            setSubmitError(safeMessage);
         } finally {
             setSubmitting(false);
         }

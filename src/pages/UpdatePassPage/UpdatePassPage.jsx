@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
 import Typography from "../../components/Typography/Typography.jsx";
@@ -23,6 +23,8 @@ const UpdatePassPage = () => {
     const [successMessage, setSuccessMessage] = useState("");
     const [submitting, setSubmitting] = useState(false);
     const [validSession, setValidSession] = useState(false);
+    const errorRef = useRef(null);
+    const successRef = useRef(null);
 
     const navigate = useNavigate();
 
@@ -75,17 +77,23 @@ const UpdatePassPage = () => {
         try {
             await updatePassword(formData.password);
             setSuccessMessage("Password updated successfully! You will be redirected to login");
-
-            setTimeout(async () => {
-                await logout();
-                navigate("/login");
-            }, 2000);
+            await logout();
+            navigate("/login");
         } catch (error) {
-            setSubmitError(error.message || "Failed to update password.")
+            const safeMessage = error?.message || error?.error_description || error?.hint || "Failed to update password."
+            setSubmitError(safeMessage)
         } finally {
             setSubmitting(false);
         }
     };
+
+    useLayoutEffect(() => {
+        if (successMessage && successRef.current) {
+            successRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else if (submitError && errorRef.current) {
+            errorRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    }, [submitError, successMessage]);
 
     if (!validSession) return null;
 
@@ -95,12 +103,12 @@ const UpdatePassPage = () => {
                 Update Your Password
             </Typography>
             {submitError && (
-                <Typography variant="p2" className="update-password__error">
+                <Typography ref={errorRef} variant="p2" className="update-password__error">
                     {submitError}
                 </Typography>
             )}
             {successMessage && (
-                <Typography variant="p2" className="update-password__success">
+                <Typography ref={successRef} variant="p2" className="update-password__success">
                     {successMessage}
                 </Typography>
             )}
