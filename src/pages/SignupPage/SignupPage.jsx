@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { Link } from "react-router-dom";
 import Typography from "../../components/Typography/Typography.jsx";
@@ -25,6 +25,7 @@ const SignupPage = () => {
     const [submitting, setSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
+    const errorRef = useRef(null);
     const successRef = useRef(null);
 
     const handleChange = (field, value) => {
@@ -80,11 +81,13 @@ const SignupPage = () => {
         }
     };
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (successMessage && successRef.current) {
             successRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else if (submitError && errorRef.current) {
+            errorRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
         }
-    }, [successMessage]);
+    }, [submitError, successMessage]);
 
     return (
         <div className="signup">
@@ -93,13 +96,13 @@ const SignupPage = () => {
             </Typography>
 
             {submitError && (
-                <Typography variant="p2" className="signup__error">
+                <Typography ref={errorRef} variant="p2" className="signup__error">
                     {submitError}
                 </Typography>
             )}
 
             {successMessage && (
-                <Typography variant="p2" className="signup__success">
+                <Typography ref={successRef} variant="p2" className="signup__success">
                     {successMessage}{" "}
                     <Link to="/login" className="signup__login-link">
                         Log in here
