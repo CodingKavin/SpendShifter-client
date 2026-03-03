@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Typography from "../../components/Typography/Typography.jsx";
 import Input from "../../components/Input/Input.jsx";
-import SelectInput from "../../components/Input/Input.jsx";
+import SelectInput from "../../components/Input/SelectInput.jsx";
 import Button from "../../components/Button/Button.jsx";
 import "./DashboardPage.scss";
 import api from "../../utils/axios.js";
@@ -14,24 +14,24 @@ const DashboardPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const fetchDashboard = async () => {
-      try {
-        setLoading(true);
-        setError("");
-        const response = await api.get(
-          `/dashboard?month=${month}&year=${year}`,
-        );
-        setDashData(response.data);
-      } catch (error) {
-        setError(error.message || "Failed to load dashboard data");
-      } finally {
-        setLoading(false);
-      }
-    };
+  //   useEffect(() => {
+  //     const fetchDashboard = async () => {
+  //       try {
+  //         setLoading(true);
+  //         setError("");
+  //         const response = await api.get(
+  //           `/dashboard?month=${month}&year=${year}`,
+  //         );
+  //         setDashData(response.data);
+  //       } catch (error) {
+  //         setError(error.message || "Failed to load dashboard data");
+  //       } finally {
+  //         setLoading(false);
+  //       }
+  //     };
 
-    if (month && year) fetchDashboard();
-  }, [month, year]);
+  //     if (month && year) fetchDashboard();
+  //   }, [month, year]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
@@ -68,28 +68,59 @@ const DashboardPage = () => {
     setBudget(rounded.toFixed(2));
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      setError("");
+
+      const payload = {
+        month: Number(month),
+        year: Number(year),
+        amount: Number(budget),
+      };
+
+      const response = await api.post("/budget", payload);
+
+      console.log("Budget updated:", response.data);
+
+      setDataDash((prev) => ({
+        ...prev,
+        monthlyBudget: payload.amount,
+      }));
+    } catch (error) {
+      setError(error.response?.data?.message || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section className="dashboard">
       <div className="dashboard__header">
-        <Typography variant="h1">Dashboard</Typography>
-        <div className="dashboard__month-select">
+        <Typography variant="h1" className="dashboard__header-title">
+          Dashboard
+        </Typography>
+        <form className="dashboard__form">
           <SelectInput
+            label={<Typography variant="p2">Month</Typography>}
             value={month}
             onChange={(e) => setMonth(e.target.value)}
             options={monthOptions}
-            className="dashboard__select"
+            className="dashboard__input dashboard__select"
           />
 
           <SelectInput
+            label={<Typography variant="p2">Year</Typography>}
             value={year}
             onChange={(e) => setYear(e.target.value)}
             options={yearOptions}
-            className="dashboard__select"
+            className="dashboard__input dashboard__select"
           />
           <Input
+            label={<Typography variant="p2">Budget</Typography>}
             type="number"
             min="0"
-            step="0.01"
             placeholder="Enter Amount"
             className="dashboard__input"
             value={budget}
@@ -99,10 +130,11 @@ const DashboardPage = () => {
           <Button
             variant="primary"
             onClick={() => console.log("Save date clicked")}
+            className="dashboard__save-btn"
           >
-            Save
+            <Typography variant="p2">Reset</Typography>
           </Button>
-        </div>
+        </form>
       </div>
 
       <div className="dashboard__card dashboard__card--budget">
@@ -125,7 +157,7 @@ const DashboardPage = () => {
       <div className="dashboard__card dashboard__card--recent">
         <Typography variant="h3">Recent Transactions</Typography>
         <div className="dashboard__transactions">
-          {/* TODO: Replace with recente transactions */}
+          {/* TODO: Replace with recent transactions */}
         </div>
       </div>
     </section>

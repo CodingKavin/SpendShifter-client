@@ -10,12 +10,12 @@ const SelectInput = ({
   disabled = false,
   ...props
 }) => {
-  let combinedClassName = "input";
+  let combinedClassName = "input input--select";
   if (className) combinedClassName += " " + className;
 
   return (
-    <div className="input-wrapper">
-      {label && <label className="input-label">{label}</label>}
+    <div className="input__wrapper">
+      {label && <label className="input__label">{label}</label>}
       <select
         className={`${combinedClassName} ${error ? "input--error" : ""}`}
         value={value}

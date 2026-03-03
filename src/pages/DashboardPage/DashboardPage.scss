@@ -1,0 +1,44 @@
+@use "../../styles/variables" as *;
+@use "../../styles/functions" as *;
+@use "../../styles/mixins" as *;
+
+.dashboard {
+
+    margin-left: pxToRem(24);
+
+    &__header {}
+
+    &__header-title {
+        
+    }
+
+    &__form {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        flex-direction: column;
+
+        @include tablet {
+            flex-direction: row;
+            gap: pxToRem(16);
+            align-items: center;
+        }
+    }
+
+    &__input {
+        width: pxToRem(128);
+
+        @include tablet {
+            width: pxToRem(160);
+        }
+    }
+
+    &__select {}
+
+    &__save-btn {
+        .typography--p2 {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+    }
+}

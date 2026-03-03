@@ -10,7 +10,24 @@
     padding-right: pxToRem(16);
     height: pxToRem(36);
     width: 100%;
+    
+    &__label {
+        .typography--p1,
+        .typography--p2,
+        .typography--p3,
+        .typography--h1,
+        .typography--h2,
+        .typography--h3,
+        .typography--h4 {
+            margin-top: 0;
+            margin-bottom: 0;
+            margin-left: pxToRem(10);
+        }
+    }
 
+    &--select {
+        appearance: none;
+    }
     // p2 typography
     color: $color-primary-black;
     font-size: pxToRem(13);
@@ -53,4 +70,14 @@
         margin-top: pxToRem(4);
         margin-left: pxToRem(16);
     }
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }

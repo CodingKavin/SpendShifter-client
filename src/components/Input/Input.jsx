@@ -15,8 +15,8 @@ const Input = ({
   if (className) combinedClassName += " " + className;
 
   return (
-    <div className="input-wrapper">
-      {label && <label className="input-label">{label}</label>}
+    <div className="input__wrapper">
+      {label && <label className="input__label">{label}</label>}
       <input
         type={type}
         className={`${combinedClassName} ${error ? "input--error" : ""}`}
