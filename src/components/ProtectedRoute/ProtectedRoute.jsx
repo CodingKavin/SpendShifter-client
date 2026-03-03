@@ -3,17 +3,21 @@ import { Navigate } from "react-router-dom";
 import Typography from "../Typography/Typography.jsx";
 
 const ProtectedRoute = ({ children }) => {
-    const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
 
-    if (loading) {
-        return <div className="loading-text"><Typography variant="p2">Loading...</Typography></div>;
-    }
+  if (loading) {
+    return (
+      <div className="loading-text">
+        <Typography variant="p2">Loading...</Typography>
+      </div>
+    );
+  }
 
-    if (!isAuthenticated) {
-        return <Navigate to="/login" replace />;
-    }
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
 
-    return children;
-}
+  return children;
+};
 
 export default ProtectedRoute;

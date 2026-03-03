@@ -1,11 +1,7 @@
-import "./TableCard.scss"
+import "./TableCard.scss";
 
 const TableCard = ({ children, className = "" }) => {
-    return (
-        <article className={`card ${className}`.trim()}>
-            {children}
-        </article>
-    );
+  return <article className={`card ${className}`.trim()}>{children}</article>;
 };
 
 export default TableCard;

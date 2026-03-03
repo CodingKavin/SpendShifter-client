@@ -4,72 +4,84 @@ import { supabase } from "../utils/supabase.js";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        supabase.auth.getSession().then(({ data }) => {
-            const currentUser = data.session?.user || null;
-            setUser(currentUser);
-            setIsAuthenticated(!!currentUser);
-            setLoading(false);
-        });
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      const currentUser = data.session?.user || null;
+      setUser(currentUser);
+      setLoading(false);
+    });
 
-        const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-            const currentUser = session?.user || null;
-            setUser(currentUser);
-            setIsAuthenticated(!!currentUser);
-        });
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      const currentUser = session?.user || null;
+      setUser(currentUser);
+    });
 
-        return () => listener.subscription.unsubscribe();
-    }, []);
+    return () => subscription.unsubscribe();
+  }, []);
 
-    const signup = async ({ email, password, options = {} }) => {
-        const { data, error } = await supabase.auth.signUp({ email, password, ...options });
-        if (error) throw error;
-        setUser(data.user);
-        return data.user;
-    };
+  const signup = async ({ email, password, options = {} }) => {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      ...options,
+    });
+    if (error) throw error;
+    setUser(data.user);
+    return data.user;
+  };
 
-    const login = async ({ email, password }) => {
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-        setUser(data.user);
-        setIsAuthenticated(!!data.user);
-        return data.user;
-    };
+  const login = async ({ email, password }) => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) throw error;
+    return data.user;
+  };
 
-    const logout = async () => {
-        await supabase.auth.signOut();
-        setUser(null);
-        setIsAuthenticated(false);
-    };
+  const logout = async () => {
+    await supabase.auth.signOut();
+    if (error) throw error;
+  };
 
-    const resetPassword = async (email) => {
-        const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: window.location.origin + "/update-password",
-        });
-        if (error) throw error;
-        return data;
-    };
+  const resetPassword = async (email) => {
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + "/update-password",
+    });
+    if (error) throw error;
+    return data;
+  };
 
-    const updatePassword = async (newPassword) => {
-        const { data, error } = await supabase.auth.updateUser({
-            password: newPassword
-        });
+  const updatePassword = async (newPassword) => {
+    const { data, error } = await supabase.auth.updateUser({
+      password: newPassword,
+    });
 
-        if (error) throw error;
-        setUser(data.user);
-        setIsAuthenticated(!!data.user);
-        return data.user;
-    }
+    if (error) throw error;
+    return data.user;
+  };
 
-    return (
-        <AuthContext.Provider value={{ user, isAuthenticated, loading, signup, login, logout, resetPassword, updatePassword }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuthenticated: !!user,
+        loading,
+        signup,
+        login,
+        logout,
+        resetPassword,
+        updatePassword,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = () => useContext(AuthContext);
