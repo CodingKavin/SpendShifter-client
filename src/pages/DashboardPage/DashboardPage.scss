@@ -66,14 +66,48 @@
     }
 
     &__card {
-        &--budget {}
+        .typography--p1,
+        .typography--p2,
+        .typography--p3,
+        .typography--h1,
+        .typography--h2,
+        .typography--h3,
+        .typography--h4 {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        height: 200px;
+        width: 300px;
+
+        &--budget {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: pxToRem(12);
+
+            @include tablet {
+                // flex-direction: row;
+            }
+        }
 
         &--pie {}
 
         &--recent {}
     }
 
-    &__budget-summary-amount {}
+    &__budget-summary-amount {
+        display: flex;
+        flex-direction: column;
+        gap: pxToRem(8);
+        align-items: center;
+        margin: pxToRem(8);
+
+        @include tablet {
+            flex-direction: row;
+        }
+    }
 
     &__budget-total {}
 
@@ -83,8 +117,8 @@
 
     &__budget-progress {
         height: 20px;
-        width: 100px;
-        background-color: red;
+        width: 300px;
+        background-color: $color-secondary-cloud;
         border-radius: 4px;
     }
 

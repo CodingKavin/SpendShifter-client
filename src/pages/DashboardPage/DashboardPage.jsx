@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "../../context/AuthContext.jsx";
 import Typography from "../../components/Typography/Typography.jsx";
 import Input from "../../components/Input/Input.jsx";
 import SelectInput from "../../components/Input/SelectInput.jsx";
@@ -108,15 +109,19 @@ const DashboardPage = () => {
     progressStatus = "over";
   }
 
+  const { user } = useAuth();
+  console.log("Supabase user object:", user);
+  const userName = user?.user_metadata?.full_name || user?.email || "User";
+
   return (
     <section className="dashboard">
       <div className="dashboard__header">
         <Typography variant="h1" className="dashboard__header-title">
-          Dashboard
+          Welcome {userName}!
         </Typography>
         <form className="dashboard__form">
           <SelectInput
-            label={<Typography variant="p2">Month</Typography>}
+            label={<Typography variant="p1">Month</Typography>}
             value={month}
             onChange={(e) => setMonth(e.target.value)}
             options={monthOptions}
@@ -124,14 +129,14 @@ const DashboardPage = () => {
           />
 
           <SelectInput
-            label={<Typography variant="p2">Year</Typography>}
+            label={<Typography variant="p1">Year</Typography>}
             value={year}
             onChange={(e) => setYear(e.target.value)}
             options={yearOptions}
             className="dashboard__input dashboard__select"
           />
           <Input
-            label={<Typography variant="p2">Budget</Typography>}
+            label={<Typography variant="p1">Budget</Typography>}
             type="number"
             min="0"
             placeholder="Enter Amount"
@@ -145,21 +150,20 @@ const DashboardPage = () => {
             onClick={() => console.log("Save date clicked")}
             className="dashboard__reset-btn"
           >
-            <Typography variant="p2">Reset</Typography>
+            <Typography variant="p1">Reset</Typography>
           </Button>
         </form>
       </div>
 
       <div className="dashboard__card dashboard__card--budget">
-        <Typography variant="h3">Monthly Budget</Typography>
-
-        {/* Budget Numbers */}
+        <Typography variant="h2">Summary</Typography>
         <div className="dashboard__budget-summary-amount">
-          <Typography variant="h2" className="dashboard__budget-total">
+          <Typography variant="h3">Current Budget</Typography>
+          <Typography variant="p1" className="dashboard__budget-total">
             {`$${currentBudget}`}
           </Typography>
-
-          <Typography variant="p2" className="dashboard__budget-spent">
+          <Typography variant="h3">Amount Spent</Typography>
+          <Typography variant="p1" className="dashboard__budget-spent">
             {`$${currentSpending}`}
           </Typography>
         </div>
@@ -168,7 +172,7 @@ const DashboardPage = () => {
           <div className="dashboard__budget-progress">
             <div
               className="dashboard__budget-progress-fill"
-              style={{ width: { progressWidth } }}
+              style={{ width: `${progressWidth}%` }}
             />
           </div>
 
@@ -179,7 +183,7 @@ const DashboardPage = () => {
       </div>
 
       <div className="dashboard__card dashboard__card--pie">
-        <Typography variant="h3">Spending by Category</Typography>
+        <Typography variant="h2">Spending by Category</Typography>
         <div className="dashboard__pie-placeholder">
           {/* TODO: Replace with PieChart component */}
           <p>Pie Chart Here</p>
@@ -187,7 +191,7 @@ const DashboardPage = () => {
       </div>
 
       <div className="dashboard__card dashboard__card--recent">
-        <Typography variant="h3">Recent Transactions</Typography>
+        <Typography variant="h2">Recent Transactions</Typography>
         <div className="dashboard__transactions">
           {/* TODO: Replace with recent transactions */}
         </div>
