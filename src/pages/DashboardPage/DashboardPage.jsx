@@ -95,6 +95,19 @@ const DashboardPage = () => {
     }
   };
 
+  let currentBudget = 2500; //needs to be a state variable
+  let currentSpending = 1100; // needs to be a state variable
+  let progressWidth = Math.min((currentSpending / currentBudget) * 100, 100);
+  let progressStatus;
+
+  if (currentSpending / currentBudget < 0.75) {
+    progressStatus = "good";
+  } else if (currentSpending / currentBudget < 1) {
+    progressStatus = "warn";
+  } else {
+    progressStatus = "over";
+  }
+
   return (
     <section className="dashboard">
       <div className="dashboard__header">
@@ -130,7 +143,7 @@ const DashboardPage = () => {
           <Button
             variant="primary"
             onClick={() => console.log("Save date clicked")}
-            className="dashboard__save-btn"
+            className="dashboard__reset-btn"
           >
             <Typography variant="p2">Reset</Typography>
           </Button>
@@ -139,11 +152,30 @@ const DashboardPage = () => {
 
       <div className="dashboard__card dashboard__card--budget">
         <Typography variant="h3">Monthly Budget</Typography>
-        <div className="dashboard__budget-amount"></div>
-        <Typography
-          variant="p2"
-          className="dashboard__budget-change"
-        ></Typography>
+
+        {/* Budget Numbers */}
+        <div className="dashboard__budget-summary-amount">
+          <Typography variant="h2" className="dashboard__budget-total">
+            {`$${currentBudget}`}
+          </Typography>
+
+          <Typography variant="p2" className="dashboard__budget-spent">
+            {`$${currentSpending}`}
+          </Typography>
+        </div>
+
+        <div className="dashboard__budget-summary-progress">
+          <div className="dashboard__budget-progress">
+            <div
+              className="dashboard__budget-progress-fill"
+              style={{ width: { progressWidth } }}
+            />
+          </div>
+
+          <Typography variant="p2" className="dashboard__budget-change">
+            ↑ 8% from last month
+          </Typography>
+        </div>
       </div>
 
       <div className="dashboard__card dashboard__card--pie">

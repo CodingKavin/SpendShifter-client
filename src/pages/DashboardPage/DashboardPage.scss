@@ -4,21 +4,32 @@
 
 .dashboard {
 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
     margin-left: pxToRem(24);
 
     &__header {}
 
     &__header-title {
-        
+        display: flex;
+        justify-content: center;
     }
 
     &__form {
         display: flex;
-        align-items: flex-start;
         justify-content: center;
-        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: center;
+
+        & > *:not(.dashboard__reset-btn) {
+            flex: 1 1 30%;
+        }
 
         @include tablet {
+            flex-wrap: nowrap;
             flex-direction: row;
             gap: pxToRem(16);
             align-items: center;
@@ -35,10 +46,53 @@
 
     &__select {}
 
-    &__save-btn {
+    &__reset-btn {
         .typography--p2 {
             margin-top: 0;
             margin-bottom: 0;
         }
+
+        // flex: 1 1 100%;
+        width: 60%;
+
+
+        @include tablet {
+            // flex: 0 0 auto;
+            margin-top: 0;
+            align-self: center;
+            margin-top: pxToRem(8);
+            width: pxToRem(100);
+        }
     }
+
+    &__card {
+        &--budget {}
+
+        &--pie {}
+
+        &--recent {}
+    }
+
+    &__budget-summary-amount {}
+
+    &__budget-total {}
+
+    &__budget-spent {}
+
+    &__budget-summary-progress {}
+
+    &__budget-progress {
+        height: 20px;
+        width: 100px;
+        background-color: red;
+        border-radius: 4px;
+    }
+
+    &__budget-progress-fill {
+        height: 20px;
+        background-color: green;
+        border-radius: 4px;
+    }
+
+    &__budget-change {}
 }
