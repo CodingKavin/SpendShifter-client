@@ -51,16 +51,13 @@
             margin-top: 0;
             margin-bottom: 0;
         }
-
-        // flex: 1 1 100%;
         width: 60%;
 
 
         @include tablet {
-            // flex: 0 0 auto;
             margin-top: 0;
             align-self: center;
-            margin-top: pxToRem(8);
+            margin-top: pxToRem(14);
             width: pxToRem(100);
         }
     }

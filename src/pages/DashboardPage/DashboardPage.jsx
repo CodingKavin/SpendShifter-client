@@ -150,7 +150,7 @@ const DashboardPage = () => {
             onClick={() => console.log("Save date clicked")}
             className="dashboard__reset-btn"
           >
-            <Typography variant="p1">Reset</Typography>
+            <Typography variant="p2">Reset</Typography>
           </Button>
         </form>
       </div>

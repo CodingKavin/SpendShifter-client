@@ -79,6 +79,7 @@ const SignupPage = () => {
         password: formData.password,
         options: {
           data: { full_name: formData.name.trim() },
+          redirectTo: "http://localhost:5173/",
         },
       });
       setFormData({ name: "", email: "", password: "", confirmPassword: "" });
