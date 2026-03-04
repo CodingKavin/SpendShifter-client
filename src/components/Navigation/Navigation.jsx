@@ -10,29 +10,43 @@ const Navigation = () => {
   const navigate = useNavigate();
   const { logout, isAuthenticated } = useAuth();
 
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isTabletOpen, setIsTabletOpen] = useState(false);
+  const mobileRef = useRef(null);
+  const tabletRef = useRef(null);
 
-  const toggleDropDown = () => {
-    setIsOpen((prev) => !prev);
-  };
+  const toggleMobile = () => setIsMobileOpen((prev) => !prev);
+  const toggleTablet = () => setIsTabletOpen((prev) => !prev);
 
   const handlelogout = async () => {
     await logout();
+    setIsMobileOpen(false);
+    setIsTabletOpen(false);
     navigate("/login");
-    setIsOpen(false);
   };
 
   useEffect(() => {
+    setIsMobileOpen(false);
+    setIsTabletOpen(false);
+  }, [isAuthenticated]);
+
+  useEffect(() => {
     const handlePointerDown = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
+      const clickedOutsideMobile =
+        !mobileRef.current || !mobileRef.current.contains(event.target);
+      const clickedOutsideTablet =
+        !tabletRef.current || !tabletRef.current.contains(event.target);
+
+      if (clickedOutsideMobile && clickedOutsideTablet) {
+        setIsMobileOpen(false);
+        setIsTabletOpen(false);
       }
     };
 
     const handleEscape = (event) => {
       if (event.key === "Escape") {
-        setIsOpen(false);
+        setIsMobileOpen(false);
+        setIsTabletOpen(false);
       }
     };
 
@@ -59,11 +73,11 @@ const Navigation = () => {
         {isAuthenticated && (
           <div
             className="navbar__profile navbar__profile--mobile"
-            ref={dropdownRef}
+            ref={mobileRef}
           >
             <button
               className="navbar__icon-wrapper navbar__profile-btn"
-              onClick={toggleDropDown}
+              onClick={toggleMobile}
             >
               <img
                 src={profile}
@@ -71,7 +85,7 @@ const Navigation = () => {
                 className="navbar__icon navbar__icon--profile"
               />
             </button>
-            {isOpen && (
+            {isMobileOpen && (
               <div className="navbar__dropdown">
                 <button
                   className="navbar__dropdown-item"
@@ -115,11 +129,11 @@ const Navigation = () => {
         <div className="navbar__right">
           <div
             className="navbar__profile navbar__profile--tablet"
-            ref={dropdownRef}
+            ref={tabletRef}
           >
             <button
               className="navbar__icon-wrapper navbar__profile-btn"
-              onClick={toggleDropDown}
+              onClick={toggleTablet}
             >
               <img
                 src={profile}
@@ -127,7 +141,7 @@ const Navigation = () => {
                 className="navbar__icon navbar__icon--profile"
               />
             </button>
-            {isOpen && (
+            {isTabletOpen && (
               <div className="navbar__dropdown">
                 <button
                   className="navbar__dropdown-item"
