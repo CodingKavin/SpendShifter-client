@@ -120,6 +120,7 @@ const DashboardPage = () => {
     { category: "Transportation", amount: 200 },
     { category: "Entertainment", amount: 150 },
     { category: "Other", amount: 100 },
+    { category: "Lifestyle", amount: 500 },
   ];
 
   return (

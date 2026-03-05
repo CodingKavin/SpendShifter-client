@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   PieChart,
   Pie,
@@ -18,6 +19,24 @@ const COLORS = [
 ];
 
 const ExpensePieChart = ({ data }) => {
+  const [outerRadius, setOuterRadius] = useState(100);
+  const [chartKey, setChartKey] = useState(0);
+
+  useEffect(() => {
+    const updateRadius = () => {
+      if (window.innerWidth < 1200) {
+        setOuterRadius(90);
+      } else {
+        setOuterRadius(100);
+      }
+      setChartKey((prev) => prev + 1);
+    };
+
+    updateRadius();
+    window.addEventListener("resize", updateRadius);
+    return () => window.removeEventListener("resize", updateRadius);
+  }, []);
+
   const chartData =
     data && data.length > 0 ? data : [{ category: "No Expenses", amount: 1 }];
 
@@ -39,7 +58,7 @@ const ExpensePieChart = ({ data }) => {
               nameKey="category"
               cx="50%"
               cy="50%"
-              outerRadius={100}
+              outerRadius={outerRadius}
               label={data && data.length > 0 ? renderPieLabel : false}
             >
               {chartData.map((_, index) => (
@@ -50,7 +69,7 @@ const ExpensePieChart = ({ data }) => {
               ))}
             </Pie>
             <Tooltip />
-            <Legend />
+            <Legend wrapperStyle={{ marginTop: 20 }} />
           </PieChart>
         </ResponsiveContainer>
       </div>
