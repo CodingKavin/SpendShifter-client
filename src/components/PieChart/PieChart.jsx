@@ -8,39 +8,47 @@ import {
 } from "recharts";
 import "./PieChart.scss";
 
-const sampleData = [
-  { category: "Housing", amount: 1200 },
-  { category: "Food", amount: 450 },
-  { category: "Transportation", amount: 200 },
-  { category: "Entertainment", amount: 150 },
-  { category: "Other", amount: 100 },
+const COLORS = [
+  "#4F46E5",
+  "#22C55E",
+  "#F59E0B",
+  "#EF4444",
+  "#06B6D4",
+  "#8B5CF6",
 ];
 
-const COLORS = ["#4F46E5", "#22C55E", "#F59E0B", "#EF4444", "#06B6D4"];
+const ExpensePieChart = ({ data }) => {
+  const chartData =
+    data && data.length > 0 ? data : [{ category: "No Expenses", amount: 1 }];
 
-const ExpensePieChart = ({ data = sampleData }) => {
+  const chartColors = data && data.length > 0 ? COLORS : ["#E5E7EB"]; // gray for empty
+
+  const renderPieLabel = ({ value, percent, name }) => {
+    // if (!value || percent < 0.01) return null;
+    return `$${value}`;
+  };
+
   return (
     <div className="pie-chart">
       <div className="pie-chart__container">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
-              data={data}
+              data={chartData}
               dataKey="amount"
               nameKey="category"
               cx="50%"
               cy="50%"
               outerRadius={100}
-              label
+              label={data && data.length > 0 ? renderPieLabel : false}
             >
-              {data.map((_, index) => (
+              {chartData.map((_, index) => (
                 <Cell
                   key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
+                  fill={chartColors[index % chartColors.length]}
                 />
               ))}
             </Pie>
-
             <Tooltip />
             <Legend />
           </PieChart>

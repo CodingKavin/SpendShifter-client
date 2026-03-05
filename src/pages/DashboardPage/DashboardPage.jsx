@@ -115,11 +115,11 @@ const DashboardPage = () => {
   const userName = user?.user_metadata?.full_name || user?.email || "User";
 
   const sampleData = [
-    { name: "Housing", value: 1200 },
-    { name: "Food", value: 450 },
-    { name: "Transportation", value: 200 },
-    { name: "Entertainment", value: 150 },
-    { name: "Other", value: 100 },
+    { category: "Housing", amount: 1200 },
+    { category: "Food", amount: 450 },
+    { category: "Transportation", amount: 200 },
+    { category: "Entertainment", amount: 150 },
+    { category: "Other", amount: 100 },
   ];
 
   return (
@@ -194,7 +194,7 @@ const DashboardPage = () => {
       <div className="dashboard__card dashboard__card--pie">
         <Typography variant="h2">Spending by Category</Typography>
         <div className="dashboard__pie-chart">
-          <PieChart />
+          <PieChart data={sampleData} />
         </div>
       </div>
     </section>
