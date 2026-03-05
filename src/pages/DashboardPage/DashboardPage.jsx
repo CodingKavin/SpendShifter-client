@@ -4,6 +4,7 @@ import Typography from "../../components/Typography/Typography.jsx";
 import Input from "../../components/Input/Input.jsx";
 import SelectInput from "../../components/Input/SelectInput.jsx";
 import Button from "../../components/Button/Button.jsx";
+import PieChart from "../../components/PieChart/PieChart.jsx";
 import "./DashboardPage.scss";
 import api from "../../utils/axios.js";
 
@@ -113,6 +114,14 @@ const DashboardPage = () => {
   console.log("Supabase user object:", user);
   const userName = user?.user_metadata?.full_name || user?.email || "User";
 
+  const sampleData = [
+    { name: "Housing", value: 1200 },
+    { name: "Food", value: 450 },
+    { name: "Transportation", value: 200 },
+    { name: "Entertainment", value: 150 },
+    { name: "Other", value: 100 },
+  ];
+
   return (
     <section className="dashboard">
       <div className="dashboard__header">
@@ -150,7 +159,7 @@ const DashboardPage = () => {
             onClick={() => console.log("Save date clicked")}
             className="dashboard__reset-btn"
           >
-            <Typography variant="p2">Reset</Typography>
+            <Typography variant="p2">Update Budget</Typography>
           </Button>
         </form>
       </div>
@@ -158,13 +167,13 @@ const DashboardPage = () => {
       <div className="dashboard__card dashboard__card--budget">
         <Typography variant="h2">Summary</Typography>
         <div className="dashboard__budget-summary-amount">
-          <Typography variant="h3">Current Budget</Typography>
-          <Typography variant="p1" className="dashboard__budget-total">
-            {`$${currentBudget}`}
-          </Typography>
-          <Typography variant="h3">Amount Spent</Typography>
+          <Typography variant="h3">Amount Spent:</Typography>
           <Typography variant="p1" className="dashboard__budget-spent">
             {`$${currentSpending}`}
+          </Typography>
+          <Typography variant="h3">Current Budget:</Typography>
+          <Typography variant="p1" className="dashboard__budget-total">
+            {`$${currentBudget}`}
           </Typography>
         </div>
 
@@ -184,16 +193,8 @@ const DashboardPage = () => {
 
       <div className="dashboard__card dashboard__card--pie">
         <Typography variant="h2">Spending by Category</Typography>
-        <div className="dashboard__pie-placeholder">
-          {/* TODO: Replace with PieChart component */}
-          <p>Pie Chart Here</p>
-        </div>
-      </div>
-
-      <div className="dashboard__card dashboard__card--recent">
-        <Typography variant="h2">Recent Transactions</Typography>
-        <div className="dashboard__transactions">
-          {/* TODO: Replace with recent transactions */}
+        <div className="dashboard__pie-chart">
+          <PieChart />
         </div>
       </div>
     </section>

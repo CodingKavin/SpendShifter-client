@@ -3,127 +3,207 @@
 @use "../../styles/mixins" as *;
 
 .dashboard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: pxToRem(8) auto;
 
+  &__header {
+  }
+
+  &__header-title {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__form {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    background-color: $color-primary-white;
+    padding: pxToRem(16) pxToRem(24) pxToRem(24) pxToRem(24);
+    border-top: 1px solid $color-secondary-cloud;
+    box-shadow: 0px 2px 5px 0px rgba($color-primary-black, 0.1);
+    border-radius: pxToRem(20);
+
+    & > *:not(.dashboard__reset-btn) {
+      flex: 1 1 25%;
+    }
+
+    @include tablet {
+      flex-wrap: nowrap;
+      flex-direction: row;
+      gap: pxToRem(16);
+      align-items: center;
+    }
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  &__input {
+    width: pxToRem(80);
+
+    @include tablet {
+      width: pxToRem(120);
+    }
+
+    @include desktop {
+      width: pxToRem(160);
+    }
+  }
+
+  &__select {
+  }
+
+  &__reset-btn {
+    .typography--p2 {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    width: 60%;
+
+    @include tablet {
+      margin-top: 0;
+      align-self: center;
+      margin-top: pxToRem(14);
+      //   width: pxToRem(100);
+    }
+  }
+
+  &__card {
+    .typography--p1,
+    .typography--p2,
+    .typography--p3,
+    .typography--h1,
+    .typography--h2,
+    .typography--h3,
+    .typography--h4 {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    // height: 200px;
+    width: 300px;
+
+    &--budget {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: pxToRem(12);
+      background-color: $color-primary-white;
+      padding: pxToRem(16) pxToRem(24) pxToRem(24) pxToRem(24);
+      border-top: 1px solid $color-secondary-cloud;
+      box-shadow: 0px 2px 5px 0px rgba($color-primary-black, 0.1);
+      border-radius: pxToRem(20);
+      margin-top: pxToRem(24);
+      padding-top: pxToRem(30);
+      width: 360px;
+
+      @include tablet {
+        // padding-top: 0;
+        width: 530px;
+      }
+
+      @include desktop {
+        width: 650px;
+      }
+
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    &--pie {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: pxToRem(12);
+      background-color: $color-primary-white;
+      padding: pxToRem(16) pxToRem(24) pxToRem(24) pxToRem(24);
+      border-top: 1px solid $color-secondary-cloud;
+      box-shadow: 0px 2px 5px 0px rgba($color-primary-black, 0.1);
+      border-radius: pxToRem(20);
+      margin-top: pxToRem(24);
+      padding-top: pxToRem(30);
+      width: 360px;
+
+      @include tablet {
+        width: 530px;
+      }
+
+      @include desktop {
+        width: 650px;
+      }
+
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+
+  &__budget-summary-amount {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    gap: pxToRem(8);
+    align-items: center;
+    margin: pxToRem(8);
+
+    @include tablet {
+      flex-direction: row;
+    }
+
+    @include desktop {
+      flex-wrap: wrap;
+      width: 25%;
+    }
+  }
+
+  &__budget-total {
+  }
+
+  &__budget-spent {
+  }
+
+  &__budget-summary-progress {
+  }
+
+  &__budget-progress {
+    height: 20px;
+    width: 200px;
+    background-color: $color-secondary-cloud;
+    border-radius: 4px;
+    display: flex;
+    justify-content: flex-start;
     align-items: center;
 
-    margin-left: pxToRem(24);
-
-    &__header {}
-
-    &__header-title {
-        display: flex;
-        justify-content: center;
+    @include tablet {
+      width: 300px;
     }
+  }
 
-    &__form {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        align-items: center;
+  &__budget-progress-fill {
+    height: 20px;
+    background-color: green;
+    border-radius: 4px;
+  }
 
-        & > *:not(.dashboard__reset-btn) {
-            flex: 1 1 30%;
-        }
+  &__budget-change {
+    justify-self: center;
+    padding-top: pxToRem(8);
+  }
 
-        @include tablet {
-            flex-wrap: nowrap;
-            flex-direction: row;
-            gap: pxToRem(16);
-            align-items: center;
-        }
-    }
-
-    &__input {
-        width: pxToRem(128);
-
-        @include tablet {
-            width: pxToRem(160);
-        }
-    }
-
-    &__select {}
-
-    &__reset-btn {
-        .typography--p2 {
-            margin-top: 0;
-            margin-bottom: 0;
-        }
-        width: 60%;
-
-
-        @include tablet {
-            margin-top: 0;
-            align-self: center;
-            margin-top: pxToRem(14);
-            width: pxToRem(100);
-        }
-    }
-
-    &__card {
-        .typography--p1,
-        .typography--p2,
-        .typography--p3,
-        .typography--h1,
-        .typography--h2,
-        .typography--h3,
-        .typography--h4 {
-            margin-top: 0;
-            margin-bottom: 0;
-        }
-
-        height: 200px;
-        width: 300px;
-
-        &--budget {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: pxToRem(12);
-
-            @include tablet {
-                // flex-direction: row;
-            }
-        }
-
-        &--pie {}
-
-        &--recent {}
-    }
-
-    &__budget-summary-amount {
-        display: flex;
-        flex-direction: column;
-        gap: pxToRem(8);
-        align-items: center;
-        margin: pxToRem(8);
-
-        @include tablet {
-            flex-direction: row;
-        }
-    }
-
-    &__budget-total {}
-
-    &__budget-spent {}
-
-    &__budget-summary-progress {}
-
-    &__budget-progress {
-        height: 20px;
-        width: 300px;
-        background-color: $color-secondary-cloud;
-        border-radius: 4px;
-    }
-
-    &__budget-progress-fill {
-        height: 20px;
-        background-color: green;
-        border-radius: 4px;
-    }
-
-    &__budget-change {}
+  &__pie-chart {
+    width: 100%;
+    height: 300px;
+  }
 }
