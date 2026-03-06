@@ -193,13 +193,32 @@
 
   &__budget-progress-fill {
     height: 20px;
-    background-color: green;
     border-radius: 4px;
+
+    &--good {
+      background-color: $color-supporting-green;
+    }
+
+    &--warn {
+      background-color: $color-supporting-orange;
+    }
+
+    &--over {
+      background-color: $color-supporting-red;
+    }
   }
 
   &__budget-change {
     justify-self: center;
     padding-top: pxToRem(8);
+
+    &--up {
+      color: $color-supporting-green;
+    }
+
+    &--down {
+      color: $color-supporting-red;
+    }
   }
 
   &__pie-chart {

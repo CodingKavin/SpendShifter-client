@@ -9,31 +9,74 @@ import "./DashboardPage.scss";
 import api from "../../utils/axios.js";
 
 const DashboardPage = () => {
-  const [month, setMonth] = useState(new Date().getMonth() + 1);
-  const [year, setYear] = useState(new Date().getFullYear());
-  const [dashData, setDashData] = useState({});
+  const [month, setMonth] = useState(
+    String(new Date().getMonth() + 1).padStart(2, "0"),
+  );
+  const [year, setYear] = useState(String(new Date().getFullYear()));
   const [budget, setBudget] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [currentBudget, setCurrentBudget] = useState(0);
+  const [currentSpending, setCurrentSpending] = useState(0);
+  const [categoryData, setCategoryData] = useState([]);
+  const [changePercent, setChangePercent] = useState(0);
+  const [changeDirection, setChangeDirection] = useState("neutral");
 
-  //   useEffect(() => {
-  //     const fetchDashboard = async () => {
-  //       try {
-  //         setLoading(true);
-  //         setError("");
-  //         const response = await api.get(
-  //           `/dashboard?month=${month}&year=${year}`,
-  //         );
-  //         setDashData(response.data);
-  //       } catch (error) {
-  //         setError(error.message || "Failed to load dashboard data");
-  //       } finally {
-  //         setLoading(false);
-  //       }
-  //     };
+  const fetchDashboardData = async () => {
+    try {
+      setLoading(true);
+      setError("");
 
-  //     if (month && year) fetchDashboard();
-  //   }, [month, year]);
+      const monthNum = Number(month);
+      const yearNum = Number(year);
+
+      const summaryResp = await api.get(
+        `/expenses/summary?month=${monthNum}&year=${yearNum}`,
+      );
+      const summary = summaryResp.data;
+      setCurrentSpending(summary.total || 0);
+      setCategoryData(summary.byCategory || []);
+
+      const lastMonth = monthNum === 1 ? 12 : monthNum - 1;
+      const lastMonthYear = monthNum === 1 ? yearNum - 1 : yearNum;
+
+      const lastMonthResp = await api.get(
+        `/expenses/summary?month=${lastMonth}&year=${lastMonthYear}`,
+      );
+      const lastMonthSpending = lastMonthResp.data.total || 0;
+
+      let diffPercent = 0;
+      if (lastMonthSpending === 0) diffPercent = summary.total > 0 ? 100 : 0;
+      else
+        diffPercent = Math.round(
+          ((summary.total - lastMonthSpending) / lastMonthSpending) * 100,
+        );
+
+      setChangePercent(diffPercent);
+      setChangeDirection(
+        diffPercent > 0 ? "up" : diffPercent < 0 ? "down" : "neutral",
+      );
+
+      const budgetResp = await api.get(
+        `/budgets?month=${monthNum}&year=${yearNum}`,
+      );
+      const fetchedBudget = budgetResp.data.budget?.amount ?? 0;
+      setCurrentBudget(fetchedBudget);
+      setBudget(fetchedBudget);
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          err.message ||
+          "Failed to load dashboard data",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (month && year) fetchDashboardData();
+  }, [month, year]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
@@ -82,14 +125,10 @@ const DashboardPage = () => {
         amount: Number(budget),
       };
 
-      const response = await api.post("/budget", payload);
-
+      const response = await api.post("/budgets", payload);
+      fetchDashboardData();
       console.log("Budget updated:", response.data);
-
-      setDataDash((prev) => ({
-        ...prev,
-        monthlyBudget: payload.amount,
-      }));
+      setCurrentBudget(response.data.budget.amount);
     } catch (error) {
       setError(error.response?.data?.message || error.message);
     } finally {
@@ -97,9 +136,10 @@ const DashboardPage = () => {
     }
   };
 
-  let currentBudget = 2500; //needs to be a state variable
-  let currentSpending = 1100; // needs to be a state variable
-  let progressWidth = Math.min((currentSpending / currentBudget) * 100, 100);
+  let progressWidth =
+    currentBudget > 0
+      ? Math.min((currentSpending / currentBudget) * 100, 100)
+      : 0;
   let progressStatus;
 
   if (currentSpending / currentBudget < 0.75) {
@@ -111,17 +151,7 @@ const DashboardPage = () => {
   }
 
   const { user } = useAuth();
-  console.log("Supabase user object:", user);
   const userName = user?.user_metadata?.full_name || user?.email || "User";
-
-  const sampleData = [
-    { category: "Housing", amount: 1200 },
-    { category: "Food", amount: 450 },
-    { category: "Transportation", amount: 200 },
-    { category: "Entertainment", amount: 150 },
-    { category: "Other", amount: 100 },
-    { category: "Lifestyle", amount: 500 },
-  ];
 
   return (
     <section className="dashboard">
@@ -157,7 +187,7 @@ const DashboardPage = () => {
           />
           <Button
             variant="primary"
-            onClick={() => console.log("Save date clicked")}
+            onClick={handleSubmit}
             className="dashboard__reset-btn"
           >
             <Typography variant="p2">Update Budget</Typography>
@@ -170,24 +200,32 @@ const DashboardPage = () => {
         <div className="dashboard__budget-summary-amount">
           <Typography variant="h3">Amount Spent:</Typography>
           <Typography variant="p1" className="dashboard__budget-spent">
-            {`$${currentSpending}`}
+            {`$${Number(currentSpending || 0).toFixed(2)}`}
           </Typography>
           <Typography variant="h3">Current Budget:</Typography>
           <Typography variant="p1" className="dashboard__budget-total">
-            {`$${currentBudget}`}
+            {`$${Number(currentBudget || 0).toFixed(2)}`}
           </Typography>
         </div>
 
         <div className="dashboard__budget-summary-progress">
           <div className="dashboard__budget-progress">
             <div
-              className="dashboard__budget-progress-fill"
+              className={`dashboard__budget-progress-fill dashboard__budget-progress-fill--${progressStatus}`}
               style={{ width: `${progressWidth}%` }}
             />
           </div>
 
-          <Typography variant="p2" className="dashboard__budget-change">
-            ↑ 8% from last month
+          <Typography
+            variant="p2"
+            className={`dashboard__budget-change dashboard__budget-change--${changeDirection}`}
+          >
+            {changeDirection === "up"
+              ? "↑"
+              : changeDirection === "down"
+                ? "↓"
+                : ""}{" "}
+            {Math.abs(changePercent)}% from last month
           </Typography>
         </div>
       </div>
@@ -195,7 +233,12 @@ const DashboardPage = () => {
       <div className="dashboard__card dashboard__card--pie">
         <Typography variant="h2">Spending by Category</Typography>
         <div className="dashboard__pie-chart">
-          <PieChart data={sampleData} />
+          <PieChart
+            data={categoryData.map((c) => ({
+              category: c.category,
+              amount: c.total,
+            }))}
+          />
         </div>
       </div>
     </section>
