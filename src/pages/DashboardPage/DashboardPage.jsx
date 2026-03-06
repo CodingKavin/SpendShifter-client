@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
 import Typography from "../../components/Typography/Typography.jsx";
 import Input from "../../components/Input/Input.jsx";
@@ -21,6 +22,7 @@ const DashboardPage = () => {
   const [categoryData, setCategoryData] = useState([]);
   const [changePercent, setChangePercent] = useState(0);
   const [changeDirection, setChangeDirection] = useState("neutral");
+  const navigate = useNavigate();
 
   const fetchDashboardData = async () => {
     try {
@@ -240,6 +242,12 @@ const DashboardPage = () => {
             }))}
           />
         </div>
+      </div>
+
+      <div className="dashboard__go-expenses">
+        <Button variant="primary" onClick={() => navigate("/expenses")}>
+          <Typography variant="p2">Go to Expenses</Typography>
+        </Button>
       </div>
     </section>
   );
