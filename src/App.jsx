@@ -10,8 +10,8 @@ import ForgotPassPage from "./pages/ForgotPassPage/ForgotPassPage.jsx";
 import UpdatePassPage from "./pages/UpdatePassPage/UpdatePassPage.jsx";
 import DashboardPage from "./pages/DashboardPage/DashboardPage.jsx";
 import ExpensesPage from "./pages/ExpensesPage/ExpensesPage.jsx";
-// import AddExpensePage from "./pages/AddExpensePage/AddExpensePage.jsx";
-// import EditExpensePage from "./pages/EditExpensePage/EditExpensePage.jsx";
+import AddExpensePage from "./pages/AddExpensePage/AddExpensePage.jsx";
+import EditExpensePage from "./pages/EditExpensePage/EditExpensePage.jsx";
 import Typography from "./components/Typography/Typography.jsx";
 import "./App.scss";
 
@@ -86,7 +86,7 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-            {/* <Route
+            <Route
               path="/expenses/form/add"
               element={
                 <ProtectedRoute>
@@ -101,7 +101,7 @@ const App = () => {
                   <EditExpensePage />
                 </ProtectedRoute>
               }
-            /> */}
+            />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
