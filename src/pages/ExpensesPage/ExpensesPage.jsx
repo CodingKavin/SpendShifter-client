@@ -1,29 +1,30 @@
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useSearch } from "../../hooks/useSearch.js";
 import { useEffect, useState } from "react";
-import Iconography from "../Iconography/Iconography";
-import TableCard from "../TableCard/TableCard.jsx";
-import TableCardField from "../TableCard/TableCardField.jsx";
-import TableCardActions from "../TableCard/TableCardActions.jsx";
-import Typography from "../Typography/Typography.jsx";
-import TablesHeader from "../TablesHeader/TablesHeader.jsx";
-import TableRowHeader from "../TableRowHeader/TableRowHeader.jsx";
+import { useDeleteModal } from "../../hooks/useDeleteModal.js";
+import TableCard from "../../components/TableCard/TableCard.jsx";
+import TableCardField from "../../components/TableCard/TableCardField.jsx";
+import TableCardActions from "../../components/TableCard/TableCardActions.jsx";
+import Typography from "../../components/Typography/Typography.jsx";
+import TablesHeader from "../../components/TablesHeader/TablesHeader.jsx";
+import TableRowHeader from "../../components/TableRowHeader/TableRowHeader.jsx";
+import DeleteModal from "../../components/DeleteModal/DeleteModal.jsx";
 import "./ExpensesPage.scss";
 
 const ExpensesPage = () => {
   const navigate = useNavigate();
   const goToAddExpense = () => navigate("/expenses/form/add");
+  const [expenses, setExpenses] = useState(0);
 
   const searchKeys = [
-    "warehouse_name",
-    "address",
-    "contact_name",
-    "contact_email",
-    "contact_phone",
+    "description",
+    "category",
+    "amount",
+    "date",
+    "recurrence",
   ];
   const { searchString, setSearchString, filteredArray } = useSearch(
-    warehouses,
+    expenses,
     searchKeys,
   );
 
@@ -31,8 +32,8 @@ const ExpensesPage = () => {
     setSearchString("");
   }, []);
 
-  if (!warehouses || warehouses.length === 0) {
-    return <p>No warehouses available.</p>;
+  if (!expenses || expenses.length === 0) {
+    return <p>No expenses available.</p>;
   }
 
   const headers = [
@@ -43,8 +44,16 @@ const ExpensesPage = () => {
     { label: "RECURRENCE", key: "recurrence", flex: 1 },
   ];
 
+  const {
+    modalOpen,
+    deleteItem,
+    openDeleteModal,
+    closeDeleteModal,
+    confirmDelete,
+  } = useDeleteModal(setExpenses, "expenses");
+
   return (
-    <main>
+    <main className="expenses">
       <TablesHeader
         headerText="Expenses"
         buttonText="+ Add Expense"
@@ -53,6 +62,66 @@ const ExpensesPage = () => {
         setSearchString={setSearchString}
       />
       <TableRowHeader headers={headers} data={expenses} setData={setExpenses} />
+      {Array.isArray(filteredArray) &&
+        filteredArray.map((expense) => (
+          <TableCard key={expense.description} className="expense-table__card">
+            <TableCardField
+              label="DESCRIPTION"
+              className="expense-table__description"
+            >
+              <Typography variant="p2" className="card__value-text">
+                {expense.description}
+              </Typography>
+            </TableCardField>
+
+            <TableCardField
+              label="CATEGORY"
+              className="expense-table__category"
+            >
+              <Typography variant="p2" className="card__value-text">
+                {expense.category}
+              </Typography>
+            </TableCardField>
+
+            <TableCardField label="AMOUNT" className="expense-table__amount">
+              <Typography variant="p2" className="card__value-text">
+                {expense.amount}
+              </Typography>
+            </TableCardField>
+
+            <TableCardField label="DATE" className="expense-table__date">
+              <Typography variant="p2" className="card__value-text">
+                {expense.date}
+              </Typography>
+            </TableCardField>
+
+            <TableCardField
+              label="RECURRENCE"
+              className="expense-table__recurrence"
+            >
+              <Typography variant="p2" className="card__value-text">
+                {expense.recurrence}
+              </Typography>
+            </TableCardField>
+
+            <TableCardActions
+              editTo={`/expenses/form/${expense.id}/edit`}
+              onDelete={() => openDeleteModal(expense)}
+              className="expense-table__actions"
+            />
+          </TableCard>
+        ))}
+      ;
+      {modalOpen && deleteItem && (
+        <DeleteModal
+          deleteItem={deleteItem.description}
+          variant="expenses"
+          onCancel={closeDeleteModal}
+          onConfirm={confirmDelete}
+        />
+      )}
     </main>
   );
 };
+
+export default ExpensesPage;

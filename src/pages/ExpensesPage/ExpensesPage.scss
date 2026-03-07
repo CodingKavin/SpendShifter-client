@@ -1,0 +1,41 @@
+@use "../../styles/functions" as *;
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.expense-table {
+  &__card {
+    gap: pxToRem(16);
+    column-gap: pxToRem(45);
+    @include desktop {
+      &:hover {
+        background-color: #2e66e512;
+      }
+    }
+  }
+
+  @include tablet {
+    &__description {
+      flex: 1;
+    }
+
+    &__category {
+      flex: 1;
+    }
+
+    &__amount {
+      flex: 1;
+    }
+
+    &__date {
+      flex: 1;
+    }
+
+    &__recurrence {
+      flex: 1;
+    }
+
+    &__actions {
+      flex: 0.75;
+    }
+  }
+}

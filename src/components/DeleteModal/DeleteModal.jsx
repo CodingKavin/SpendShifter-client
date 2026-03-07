@@ -6,11 +6,10 @@ import "./DeleteModal.scss";
 
 const DeleteModal = ({
   deleteItem,
-  variant = "warehouse",
+  variant = "expenses",
   onCancel,
   onConfirm,
 }) => {
-  //variants = warehouse, inventory
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
@@ -18,8 +17,7 @@ const DeleteModal = ({
     };
   }, []);
 
-  const safeVariant =
-    variant == "warehouse" || variant == "inventory" ? variant : "warehouse";
+  const safeVariant = variant == "expenses" ? variant : "expenses";
 
   return (
     <div className="delete-modal__wrapper">
@@ -32,26 +30,15 @@ const DeleteModal = ({
           <Iconography name="close" />
         </button>
 
-        {safeVariant == "warehouse" && (
+        {safeVariant == "expenses" && (
           <>
             <Typography variant="h1" className="delete-modal__title">
-              Delete {deleteItem} warehouse?
+              Delete {deleteItem} expense?
             </Typography>
             <Typography variant="p1" className="delete-modal__text">
               Please confirm that you’d like to delete the {deleteItem}
-              warehouse from the list of warehouses.You won’t be able to undo
-              this action.
-            </Typography>
-          </>
-        )}
-        {safeVariant == "inventory" && (
-          <>
-            <Typography variant="h1" className="delete-modal__title">
-              Delete {deleteItem} inventory item?
-            </Typography>
-            <Typography variant="p1" className="delete-modal__text">
-              Please confirm that you’d like to delete {deleteItem} from the
-              inventory list. You won’t be able to undo this action.
+              expense from the list of expenses.You won’t be able to undo this
+              action.
             </Typography>
           </>
         )}
