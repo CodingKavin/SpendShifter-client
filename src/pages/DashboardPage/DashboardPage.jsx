@@ -80,8 +80,12 @@ const DashboardPage = () => {
     if (month && year) fetchDashboardData();
   }, [month, year]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading)
+    return (
+      <p style={{ display: "flex", justifyContent: "center" }}>Loading...</p>
+    );
+  if (error)
+    return <p style={{ display: "flex", justifyContent: "center" }}>{error}</p>;
 
   const monthOptions = [
     { value: "01", label: "January" },
@@ -190,6 +194,7 @@ const DashboardPage = () => {
           <Button
             variant="primary"
             onClick={handleSubmit}
+            disabled={loading}
             className="dashboard__reset-btn"
           >
             <Typography variant="p2">Update Budget</Typography>

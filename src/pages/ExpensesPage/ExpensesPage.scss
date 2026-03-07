@@ -2,6 +2,20 @@
 @use "../../styles/variables" as *;
 @use "../../styles/mixins" as *;
 
+.expenses {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  margin-left: pxToRem(24);
+  margin-right: pxToRem(24);
+
+  @include desktop {
+    margin-left: pxToRem(32);
+    margin-right: pxToRem(32);
+  }
+}
+
 .expense-table {
   &__card {
     gap: pxToRem(16);

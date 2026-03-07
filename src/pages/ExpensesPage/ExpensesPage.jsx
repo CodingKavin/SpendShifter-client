@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useSearch } from "../../hooks/useSearch.js";
 import { useEffect, useState } from "react";
 import { useDeleteModal } from "../../hooks/useDeleteModal.js";
+import api from "../../utils/axios.js";
 import TableCard from "../../components/TableCard/TableCard.jsx";
 import TableCardField from "../../components/TableCard/TableCardField.jsx";
 import TableCardActions from "../../components/TableCard/TableCardActions.jsx";
@@ -15,6 +16,14 @@ const ExpensesPage = () => {
   const navigate = useNavigate();
   const goToAddExpense = () => navigate("/expenses/form/add");
   const [expenses, setExpenses] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    try {
+      setSearchString("");
+    } catch (error) {}
+  }, []);
 
   const searchKeys = [
     "description",
@@ -28,14 +37,6 @@ const ExpensesPage = () => {
     searchKeys,
   );
 
-  useEffect(() => {
-    setSearchString("");
-  }, []);
-
-  if (!expenses || expenses.length === 0) {
-    return <p>No expenses available.</p>;
-  }
-
   const headers = [
     { label: "DESCRIPTION", key: "description", flex: 1 },
     { label: "CATEGORY", key: "category", flex: 1 },
@@ -43,6 +44,29 @@ const ExpensesPage = () => {
     { label: "DATE", key: "date", flex: 1 },
     { label: "RECURRENCE", key: "recurrence", flex: 1 },
   ];
+
+  if (!expenses || expenses.length === 0) {
+    return (
+      <main className="expenses">
+        <TablesHeader
+          headerText="Expenses"
+          buttonText="+ Add Expense"
+          onButtonClick={goToAddExpense}
+          searchString={searchString}
+          setSearchString={setSearchString}
+          disabled={loading}
+        />
+        <TableRowHeader
+          headers={headers}
+          data={expenses}
+          setData={setExpenses}
+        />
+        <p style={{ display: "flex", justifyContent: "center" }}>
+          No expenses available.
+        </p>
+      </main>
+    );
+  }
 
   const {
     modalOpen,
@@ -60,6 +84,7 @@ const ExpensesPage = () => {
         onButtonClick={goToAddExpense}
         searchString={searchString}
         setSearchString={setSearchString}
+        disabled={loading}
       />
       <TableRowHeader headers={headers} data={expenses} setData={setExpenses} />
       {Array.isArray(filteredArray) &&

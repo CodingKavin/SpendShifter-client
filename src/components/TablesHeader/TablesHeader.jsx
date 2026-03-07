@@ -10,6 +10,7 @@ const TablesHeader = ({
   onButtonClick,
   searchString,
   setSearchString,
+  disabled = false,
 }) => {
   const [input, setInput] = useState(searchString || "");
 
@@ -52,6 +53,7 @@ const TablesHeader = ({
         className="table-header__button"
         variant="primary"
         onClick={onButtonClick}
+        disabled={disabled}
       >
         {buttonText}
       </Button>
