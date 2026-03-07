@@ -1,7 +1,7 @@
 import { useState } from "react";
 import api from "../utils/axios.js";
 
-export const useDeleteModal = (setData, endpoint) => {
+export const useDeleteModal = (endpoint) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteItem, setDeleteItem] = useState(null);
 

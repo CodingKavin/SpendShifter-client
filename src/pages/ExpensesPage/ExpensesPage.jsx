@@ -50,7 +50,7 @@ const ExpensesPage = () => {
     openDeleteModal,
     closeDeleteModal,
     confirmDelete,
-  } = useDeleteModal(setExpenses, "expenses");
+  } = useDeleteModal("expenses");
 
   return (
     <main className="expenses">
