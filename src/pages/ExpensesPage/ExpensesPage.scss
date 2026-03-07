@@ -14,13 +14,30 @@
     margin-left: pxToRem(32);
     margin-right: pxToRem(32);
   }
+
+  &__pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: pxToRem(8);
+  }
+
+  &__pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: pxToRem(8);
+  }
 }
 
 .expense-table {
   &__card {
     gap: pxToRem(16);
     column-gap: pxToRem(45);
-    @include desktop {
+
+    @include tablet {
+      gap: 0;
+      column-gap: 0;
       &:hover {
         background-color: #2e66e512;
       }

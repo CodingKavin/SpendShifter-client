@@ -10,20 +10,44 @@ import Typography from "../../components/Typography/Typography.jsx";
 import TablesHeader from "../../components/TablesHeader/TablesHeader.jsx";
 import TableRowHeader from "../../components/TableRowHeader/TableRowHeader.jsx";
 import DeleteModal from "../../components/DeleteModal/DeleteModal.jsx";
+import Button from "../../components/Button/Button.jsx";
 import "./ExpensesPage.scss";
 
 const ExpensesPage = () => {
   const navigate = useNavigate();
   const goToAddExpense = () => navigate("/expenses/form/add");
-  const [expenses, setExpenses] = useState(0);
+  const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  useEffect(() => {
+  const fetchExpenses = async () => {
     try {
-      setSearchString("");
-    } catch (error) {}
+      setLoading(true);
+      setError("");
+
+      const response = await api.get("/expenses");
+      setExpenses(response.data || []);
+    } catch (err) {
+      setError(
+        err.response?.data?.message || err.message || "Failed to load expenses",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    setSearchString("");
+    fetchExpenses();
   }, []);
+
+  const {
+    modalOpen,
+    deleteItem,
+    openDeleteModal,
+    closeDeleteModal,
+    confirmDelete,
+  } = useDeleteModal("expenses");
 
   const searchKeys = [
     "description",
@@ -36,6 +60,34 @@ const ExpensesPage = () => {
     expenses,
     searchKeys,
   );
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filteredArray]);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredArray.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredArray.length / itemsPerPage);
+
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
+  };
+
+  const handlePrev = () => {
+    if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+  };
+
+  if (loading)
+    return (
+      <p style={{ display: "flex", justifyContent: "center" }}>Loading...</p>
+    );
+
+  if (error)
+    return <p style={{ display: "flex", justifyContent: "center" }}>{error}</p>;
 
   const headers = [
     { label: "DESCRIPTION", key: "description", flex: 1 },
@@ -68,14 +120,6 @@ const ExpensesPage = () => {
     );
   }
 
-  const {
-    modalOpen,
-    deleteItem,
-    openDeleteModal,
-    closeDeleteModal,
-    confirmDelete,
-  } = useDeleteModal("expenses");
-
   return (
     <main className="expenses">
       <TablesHeader
@@ -87,9 +131,9 @@ const ExpensesPage = () => {
         disabled={loading}
       />
       <TableRowHeader headers={headers} data={expenses} setData={setExpenses} />
-      {Array.isArray(filteredArray) &&
-        filteredArray.map((expense) => (
-          <TableCard key={expense.description} className="expense-table__card">
+      {Array.isArray(currentItems) &&
+        currentItems.map((expense) => (
+          <TableCard key={expense.id} className="expense-table__card">
             <TableCardField
               label="DESCRIPTION"
               className="expense-table__description"
@@ -110,13 +154,13 @@ const ExpensesPage = () => {
 
             <TableCardField label="AMOUNT" className="expense-table__amount">
               <Typography variant="p2" className="card__value-text">
-                {expense.amount}
+                {`$${Number(expense.amount).toFixed(2)}`}
               </Typography>
             </TableCardField>
 
             <TableCardField label="DATE" className="expense-table__date">
               <Typography variant="p2" className="card__value-text">
-                {expense.date}
+                {expense.date.split("T")[0]}
               </Typography>
             </TableCardField>
 
@@ -136,7 +180,6 @@ const ExpensesPage = () => {
             />
           </TableCard>
         ))}
-      ;
       {modalOpen && deleteItem && (
         <DeleteModal
           deleteItem={deleteItem.description}
@@ -145,6 +188,37 @@ const ExpensesPage = () => {
           onConfirm={confirmDelete}
         />
       )}
+      <nav className="expenses__pagination">
+        <Button
+          variant="primary"
+          className="expenses__btn"
+          onClick={() => navigate("/dashboard")}
+        >
+          Back to Dashboard
+        </Button>
+
+        <div className="expenses__pagination-controls">
+          <Button
+            className="expenses__btn-pagination"
+            variant="secondary"
+            onClick={handlePrev}
+            disabled={currentPage === 1}
+          >
+            Prev
+          </Button>
+          <Typography variant="p2" className="expenses__page-indicator">
+            Page {currentPage} of {totalPages || 1}
+          </Typography>
+          <Button
+            className="expenses__btn-pagination"
+            variant="secondary"
+            onClick={handleNext}
+            disabled={currentPage === totalPages || totalPages === 0}
+          >
+            Next
+          </Button>
+        </div>
+      </nav>
     </main>
   );
 };
