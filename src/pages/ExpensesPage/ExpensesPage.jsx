@@ -47,7 +47,7 @@ const ExpensesPage = () => {
     openDeleteModal,
     closeDeleteModal,
     confirmDelete,
-  } = useDeleteModal("expenses");
+  } = useDeleteModal("expenses", setExpenses);
 
   const searchKeys = [
     "description",
@@ -70,7 +70,9 @@ const ExpensesPage = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredArray.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = Array.isArray(filteredArray)
+    ? filteredArray.slice(indexOfFirstItem, indexOfLastItem)
+    : [];
   const totalPages = Math.ceil(filteredArray.length / itemsPerPage);
 
   const handleNext = () => {

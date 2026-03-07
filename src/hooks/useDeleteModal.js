@@ -1,7 +1,7 @@
 import { useState } from "react";
 import api from "../utils/axios.js";
 
-export const useDeleteModal = (endpoint) => {
+export const useDeleteModal = (endpoint, setData) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteItem, setDeleteItem] = useState(null);
 
@@ -20,6 +20,8 @@ export const useDeleteModal = (endpoint) => {
 
     try {
       await api.delete(`${endpoint}/${deleteItem.id}`);
+      const response = await api.get(`${endpoint}`);
+      setData(response.data);
     } catch (error) {
       console.error("failed to delete item");
     }
