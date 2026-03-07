@@ -1,43 +1,26 @@
 import Typography from "../Typography/Typography.jsx";
 import Iconography from "../Iconography/Iconography.jsx";
-import Button from "../Button/Button.jsx";
 import "./PageHeader.scss";
 
-const PageHeader = ({ headerText, onBack, onEdit, variant = "noedit" }) => {
-  //variants = noedit, edit
-
-  const safeVariant =
-    variant == "edit" || variant == "noedit" ? variant : "edit";
-
+const PageHeader = ({ headerText, onBack }) => {
   return (
     <div className="page-header">
-      <div className="page-header__title-back-wrapper">
+      <div className="page-header__side">
         <button
           type="button"
           className="page-header__back-button"
-          aria-label={`back button`}
-          onClick={() => onBack()}
+          aria-label="Go back"
+          onClick={onBack}
         >
           <Iconography name="backArrow" className="page-header__back-icon" />
         </button>
-
-        <div className="page-header__title">
-          <Typography variant="h1">{headerText}</Typography>
-        </div>
       </div>
-      {safeVariant === "edit" && (
-        <Button
-          type="button"
-          className="page-header__edit-button"
-          variant="primary"
-          onClick={onEdit}
-        >
-          <Iconography name="editAlt" className="page-header__edit-icon" />
-          <Typography variant="p2" className="page-header__edit-text">
-            Edit
-          </Typography>
-        </Button>
-      )}
+
+      <div className="page-header__main">
+        <Typography variant="h1">{headerText}</Typography>
+      </div>
+
+      <div className="page-header__side"></div>
     </div>
   );
 };

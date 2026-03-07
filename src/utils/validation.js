@@ -33,6 +33,7 @@ export const validateConfirmPassword = (password, confirmPassword) => {
 
 export const validateDescription = (description) => {
   const cleanDescription = description.trim();
+  if (!cleanDescription) return "Description is required";
   if (cleanDescription.length > 36) {
     return "Description must be 36 characters or less";
   }
@@ -46,5 +47,16 @@ export const validateAmount = (amount) => {
   if (!regex.test(cleanAmount)) {
     return "Amount must be a valid number with up to 2 decimal places";
   }
+  const num = Number(cleanAmount);
+  if (num >= 100000000) {
+    return "Amount must be less than 100,000,000";
+  }
+  return "";
+};
+
+export const validateDate = (date) => {
+  if (!date) return "Date is required";
+  const parsed = new Date(date);
+  if (isNaN(parsed.getTime())) return "Invalid date";
   return "";
 };
