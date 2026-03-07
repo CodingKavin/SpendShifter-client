@@ -156,7 +156,7 @@ const DashboardPage = () => {
   const userName = user?.user_metadata?.full_name || user?.email || "User";
 
   return (
-    <section className="dashboard">
+    <main className="dashboard">
       <div className="dashboard__header">
         <Typography variant="h1" className="dashboard__header-title">
           Welcome {userName}!
@@ -249,7 +249,7 @@ const DashboardPage = () => {
           <Typography variant="p2">Go to Expenses</Typography>
         </Button>
       </div>
-    </section>
+    </main>
   );
 };
 
