@@ -86,5 +86,9 @@
 
   &__value-text {
     margin: 0;
+    inline-size: 90%;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
   }
 }
