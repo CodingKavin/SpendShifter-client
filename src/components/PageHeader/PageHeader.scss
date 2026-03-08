@@ -1,82 +1,42 @@
 @use "../../styles/functions" as *;
 @use "../../styles/variables" as *;
-@use "../../styles/mixins" as *;
 
 .page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: pxToRem(8);
+  border-bottom: 1px solid $color-secondary-cloud;
+  margin-bottom: pxToRem(8);
+
+  &__side {
+    flex: 1;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: pxToRem(32) pxToRem(24) pxToRem(24) pxToRem(24);
-    border-bottom: 1px solid $color-secondary-cloud;
-    background-color: $color-primary-white;
-    box-shadow: 0px 2px 5px 0px rgba($color-primary-black, 0.1);
+  }
 
-    @include tablet {
-        padding: pxToRem(32) pxToRem(32) pxToRem(22) pxToRem(32);
+  &__back-button {
+    all: unset;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 0.8;
     }
+  }
 
-    @include desktop {
-        padding: pxToRem(32) pxToRem(40) pxToRem(22) pxToRem(40);
+  &__back-icon {
+    display: block;
+    // Maintains your original iconography scaling if needed
+  }
+
+  &__title {
+    flex: 2; // Gives the title more room in the middle
+    text-align: center;
+
+    .typography--h1 {
+      margin: 0;
+      white-space: nowrap;
     }
-
-    &__title-back-wrapper {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: pxToRem(8);
-    }
-
-    &__back-button {
-        all: unset;
-        cursor: pointer;
-
-        &:hover {
-            opacity: 80%;
-        }
-    }
-
-    &__title {
-        .typography--h1 {
-            margin-top: 0;
-            margin-bottom: 0;
-        }
-    }
-
-    &__edit-button {
-        .typography--p2 {
-            margin-top: 0;
-            margin-bottom: 0;
-        }
-
-        gap: 2px;
-
-        width: pxToRem(40);
-        height: pxToRem(40);
-        padding: 0;
-        border-radius: 50%;
-        flex-shrink: 0;
-
-        @include tablet {
-            width: auto;
-            height: auto;
-            padding: 8px 16px;
-            border-radius: 20px;
-        }
-    }
-
-    &__edit-icon {
-        display: block;
-        transform: scale(calc(20 / 24));
-        transform-origin: center;
-    }
-
-    &__edit-text {
-        display: none;
-
-        @include tablet {
-            display: inline-block;
-            position: relative;
-            bottom: -2px;
-        }
-    }
+  }
 }

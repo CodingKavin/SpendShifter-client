@@ -1,0 +1,181 @@
+@use "../../styles/variables" as *;
+@use "../../styles/functions" as *;
+@use "../../styles/mixins" as *;
+
+.navbar {
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 pxToRem(24);
+    background-color: $color-background-graphite;
+
+    @include tablet {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: pxToRem(8);
+
+        @include tablet {
+            margin-bottom: 0;
+            flex: 2;
+        }
+    }
+
+    &__left {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        flex: 1;
+
+        a {
+            display: flex;
+            align-items: center;
+            gap: pxToRem(8);
+            text-decoration: none;
+        }
+    }
+
+    &__icon-wrapper {
+        width: pxToRem(40);
+        height: pxToRem(40);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__profile-btn {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__icon {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+        filter: drop-shadow(0 2px 1px rgba(255, 255, 255, 0.3)) drop-shadow(0 0 4px rgba(0, 0, 0, 0.3));
+
+        &--profile {
+            width: 75%;
+            height: 75%;
+        }
+    }
+
+    &__brand {
+        color: $color-primary-white;
+    }
+
+    &__center {
+
+        width: auto;
+        max-width: 21.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-left: 1rem;
+        margin-bottom: pxToRem(8);
+        gap: pxToRem(8);
+        flex: 1;
+
+        @include tablet {
+            margin-bottom: 0;
+        }
+    }
+
+    &__tab {
+        text-decoration: none;
+        color: $color-secondary-cloud;
+        background-color: $color-background-graphite;
+        border-radius: pxToRem(20);
+        padding: 0.5rem 2rem;
+
+        .typography--p2 {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        @include tablet {
+            padding: 0.5rem 1rem;
+        }
+
+        &--active {
+            background-color: $color-primary-black;
+            color: $color-primary-white;
+        }
+
+    }
+
+    &__right {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex: 1;
+
+
+        @include tablet {}
+    }
+
+    &__profile {
+        position: relative;
+
+        &--mobile {
+            @include tablet {
+                display: none;
+            }
+        }
+
+        &--tablet {
+            display: none;
+
+            @include tablet {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    }
+
+    &__dropdown {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: pxToRem(8);
+        background: $color-background-graphite;
+        border-radius: pxToRem(8);
+    }
+
+    &__dropdown-item {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: $color-secondary-cloud;
+        background-color: $color-secondary-slate;
+        border-radius: pxToRem(8);
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .typography--p2 {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+    }
+}

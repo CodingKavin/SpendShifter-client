@@ -1,0 +1,219 @@
+@use "../../styles/variables" as *;
+@use "../../styles/functions" as *;
+@use "../../styles/mixins" as *;
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: pxToRem(8) auto;
+
+  &__header-title {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__form {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    background-color: $color-primary-white;
+    padding: pxToRem(16) pxToRem(24) pxToRem(24) pxToRem(24);
+    border-top: 1px solid $color-secondary-cloud;
+    box-shadow: 0px 2px 5px 0px rgba($color-primary-black, 0.1);
+    border-radius: pxToRem(20);
+
+    & > *:not(.dashboard__reset-btn) {
+      flex: 1 1 25%;
+    }
+
+    @include tablet {
+      flex-wrap: nowrap;
+      flex-direction: row;
+      gap: pxToRem(16);
+      align-items: center;
+    }
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  &__input {
+    width: pxToRem(80);
+
+    @include tablet {
+      width: pxToRem(120);
+    }
+
+    @include desktop {
+      width: pxToRem(160);
+    }
+  }
+
+  &__reset-btn {
+    .typography--p2 {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    width: 60%;
+
+    @include tablet {
+      margin-top: 0;
+      align-self: center;
+      margin-top: pxToRem(14);
+    }
+  }
+
+  &__card {
+    .typography--p1,
+    .typography--p2,
+    .typography--p3,
+    .typography--h1,
+    .typography--h2,
+    .typography--h3,
+    .typography--h4 {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    width: 300px;
+
+    &--budget {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: pxToRem(12);
+      background-color: $color-primary-white;
+      padding: pxToRem(16) pxToRem(24) pxToRem(24) pxToRem(24);
+      border-top: 1px solid $color-secondary-cloud;
+      box-shadow: 0px 2px 5px 0px rgba($color-primary-black, 0.1);
+      border-radius: pxToRem(20);
+      margin-top: pxToRem(24);
+      padding-top: pxToRem(30);
+      width: 360px;
+
+      @include tablet {
+        width: 530px;
+      }
+
+      @include desktop {
+        width: 650px;
+      }
+
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    &--pie {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: pxToRem(12);
+      background-color: $color-primary-white;
+      padding: pxToRem(16) pxToRem(24) pxToRem(24) pxToRem(24);
+      border-top: 1px solid $color-secondary-cloud;
+      box-shadow: 0px 2px 5px 0px rgba($color-primary-black, 0.1);
+      border-radius: pxToRem(20);
+      margin-top: pxToRem(24);
+      padding-top: pxToRem(30);
+      width: 360px;
+
+      @include tablet {
+        width: 530px;
+      }
+
+      @include desktop {
+        width: 650px;
+      }
+
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+
+  &__budget-summary-amount {
+    display: flex;
+    flex-direction: column;
+    gap: pxToRem(8);
+    align-items: center;
+    margin: pxToRem(8);
+
+    @include tablet {
+      flex-direction: row;
+    }
+
+    @include desktop {
+      flex-wrap: wrap;
+      width: 25%;
+    }
+  }
+
+  &__budget-progress {
+    height: 20px;
+    width: 200px;
+    background-color: $color-secondary-cloud;
+    border-radius: 4px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    @include tablet {
+      width: 300px;
+    }
+  }
+
+  &__budget-progress-fill {
+    height: 20px;
+    border-radius: 4px;
+
+    &--good {
+      background-color: $color-supporting-green;
+    }
+
+    &--warn {
+      background-color: $color-supporting-orange;
+    }
+
+    &--over {
+      background-color: $color-supporting-red;
+    }
+  }
+
+  &__budget-change {
+    justify-self: center;
+    padding-top: pxToRem(8);
+
+    &--up {
+      color: $color-supporting-green;
+    }
+
+    &--down {
+      color: $color-supporting-red;
+    }
+  }
+
+  &__pie-chart {
+    width: 100%;
+    height: 300px;
+  }
+
+  &__go-expenses {
+    .typography--p2 {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    margin-top: pxToRem(16);
+  }
+}

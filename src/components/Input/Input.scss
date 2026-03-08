@@ -1,0 +1,83 @@
+@use "../../styles/variables" as *;
+@use "../../styles/functions" as *;
+@use "../../styles/mixins" as *;
+
+.input {
+    box-sizing: border-box;
+    font-family: $font-family-primary;
+    border-radius: pxToRem(20);
+    padding-left: pxToRem(16);
+    padding-right: pxToRem(16);
+    height: pxToRem(36);
+    width: 100%;
+    
+    &__label {
+        .typography--p1,
+        .typography--p2,
+        .typography--p3,
+        .typography--h1,
+        .typography--h2,
+        .typography--h3,
+        .typography--h4 {
+            margin-top: 0;
+            margin-bottom: 0;
+            margin-left: pxToRem(10);
+        }
+    }
+
+    &--select {
+        appearance: none;
+    }
+    // p2 typography
+    color: $color-primary-black;
+    font-size: pxToRem(13);
+    line-height: pxToRem(20);
+
+    &::placeholder {
+        color: $color-secondary-slate;
+    }
+
+    border: 1px solid $color-secondary-cloud;
+
+    &:focus {
+        outline: none;
+        border: 1px solid $color-primary-indigo;
+    }
+
+    &--error {
+        border: 1px solid $color-supporting-red;
+
+        &:focus {
+            border: 1px solid $color-supporting-red;
+        }
+    }
+
+    @include tablet {
+        height: pxToRem(38);
+        font-size: pxToRem(14);
+        line-height: pxToRem(22);
+    }
+
+    &:disabled {
+        background-color: $color-background-light-grey;
+        cursor: not-allowed;
+        color: $color-secondary-slate;
+    }
+
+    &__error-msg {
+        font-size: pxToRem(12);
+        color: $color-supporting-red;
+        margin-top: pxToRem(4);
+        margin-left: pxToRem(16);
+    }
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}

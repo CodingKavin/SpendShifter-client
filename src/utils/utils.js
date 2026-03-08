@@ -1,21 +1,38 @@
 export const sortArrOfObj = (arr, sortBy, ascending = true) => {
-    //only supports number and string data types and no mixed data types for the sortBy key's values
-    return [...arr].sort((a, b) => { //shallow copy because .sort mutates array
-        const valA = a[sortBy];
-        const valB = b[sortBy];
+  // Supports numbers, strings, and dates. Assumes no mixed data types.
 
-        // Handle numbers
-        if (typeof valA === "number" && typeof valB === "number") {
-            return ascending ? valA - valB : valB - valA;
-        }
+  //using shallow copy of array because .sort mutates
+  return [...arr].sort((a, b) => {
+    const valA = a[sortBy];
+    const valB = b[sortBy];
 
-        // Handle strings
-        if (typeof valA === "string" && typeof valB === "string") {
-            return ascending
-                ? valA.localeCompare(valB)
-                : valB.localeCompare(valA);
-        }
+    // Handle numbers
+    if (typeof valA === "number" && typeof valB === "number") {
+      return ascending ? valA - valB : valB - valA;
+    }
 
-        return 0;
-    });
+    // Handle Date objects
+    if (valA instanceof Date && valB instanceof Date) {
+      return ascending
+        ? valA.getTime() - valB.getTime()
+        : valB.getTime() - valA.getTime();
+    }
+
+    // Handle date strings
+    const dateA = new Date(valA);
+    const dateB = new Date(valB);
+
+    if (!isNaN(dateA) && !isNaN(dateB)) {
+      return ascending
+        ? dateA.getTime() - dateB.getTime()
+        : dateB.getTime() - dateA.getTime();
+    }
+
+    // Handle strings
+    if (typeof valA === "string" && typeof valB === "string") {
+      return ascending ? valA.localeCompare(valB) : valB.localeCompare(valA);
+    }
+
+    return 0;
+  });
 };

@@ -1,5 +1,5 @@
 {
-  "name": "instock-client",
+  "name": "SpendShifter-client",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,12 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.97.0",
     "axios": "^1.13.4",
     "dom": "^0.0.3",
     "dotenv": "^17.2.3",
     "react": "^19.2.4",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.13.0",
+    "recharts": "^3.7.0",
     "router": "^2.2.0",
     "sass": "^1.97.3",
     "uuid": "^13.0.0"
