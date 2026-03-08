@@ -2,6 +2,8 @@
 
 This is the **frontend** of the SpendShifter application — a personal finance dashboard for tracking expenses, budgets, and recurring transactions.
 
+# url: https://spendshifter.com
+
 Built with **React**, **Javascript**, and **Axios** for API communication.
 
 ## Features
