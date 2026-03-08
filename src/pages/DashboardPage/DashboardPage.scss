@@ -195,11 +195,11 @@
     padding-top: pxToRem(8);
 
     &--up {
-      color: $color-supporting-green;
+      color: $color-supporting-red;
     }
 
     &--down {
-      color: $color-supporting-red;
+      color: $color-supporting-green;
     }
   }
 
