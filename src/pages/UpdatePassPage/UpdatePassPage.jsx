@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useAuth } from "../../context/AuthContext.jsx";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import Typography from "../../components/Typography/Typography.jsx";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button.jsx";
@@ -9,12 +9,12 @@ import {
   validatePassword,
   validateConfirmPassword,
 } from "../../utils/validation.js";
-import { supabase } from "../../utils/supabase.js";
 import "./UpdatePassPage.scss";
 
 const UpdatePassPage = () => {
   const { updatePassword, logout, isRecovering, isAuthenticated, loading } =
     useAuth();
+
   const [formData, setFormData] = useState({
     password: "",
     confirmPassword: "",
@@ -26,18 +26,28 @@ const UpdatePassPage = () => {
   const [submitError, setSubmitError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
+
   const errorRef = useRef(null);
   const successRef = useRef(null);
-
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (loading) return;
+    const timer = setTimeout(() => {
+      if (successMessage && successRef.current) {
+        successRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      } else if (submitError && errorRef.current) {
+        errorRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
+    }, 100);
 
-    if (!isRecovering && !isAuthenticated) {
-      navigate("/login", { replace: true });
-    }
-  }, [loading, isRecovering, isAuthenticated, navigate]);
+    return () => clearTimeout(timer);
+  }, [submitError, successMessage]);
 
   if (loading) {
     return (
@@ -47,7 +57,9 @@ const UpdatePassPage = () => {
     );
   }
 
-  if (!isRecovering && !isAuthenticated) return null;
+  if (!isRecovering && !isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
 
   const handleChange = (field, value) => {
     const updatedData = { ...formData, [field]: value };
@@ -77,6 +89,7 @@ const UpdatePassPage = () => {
       formData.password,
       formData.confirmPassword,
     );
+
     const newErrors = {
       password: passwordError,
       confirmPassword: confirmPasswordError,
@@ -91,11 +104,12 @@ const UpdatePassPage = () => {
 
     try {
       await updatePassword(formData.password);
-      setSuccessMessage(
-        "Password updated successfully! You will be redirected to login",
-      );
-      await logout();
-      navigate("/login");
+      setSuccessMessage("Password updated successfully! Redirecting...");
+
+      setTimeout(async () => {
+        await logout();
+        navigate("/login");
+      }, 2000);
     } catch (error) {
       const safeMessage =
         error?.message ||
@@ -103,34 +117,16 @@ const UpdatePassPage = () => {
         error?.hint ||
         "Failed to update password.";
       setSubmitError(safeMessage);
-    } finally {
       setSubmitting(false);
     }
   };
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (successMessage && successRef.current) {
-        successRef.current.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-      } else if (submitError && errorRef.current) {
-        errorRef.current.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-      }
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, [submitError, successMessage]);
 
   return (
     <div className="update-password">
       <Typography variant="h2" className="update-password__header">
         Update Your Password
       </Typography>
+
       {submitError && (
         <Typography
           ref={errorRef}
@@ -140,6 +136,7 @@ const UpdatePassPage = () => {
           {submitError}
         </Typography>
       )}
+
       {successMessage && (
         <Typography
           ref={successRef}
@@ -149,6 +146,7 @@ const UpdatePassPage = () => {
           {successMessage}
         </Typography>
       )}
+
       <form onSubmit={handleSubmit} className="update-password__form">
         <div className="update-password__icon-wrapper">
           <img
@@ -167,6 +165,7 @@ const UpdatePassPage = () => {
           error={errors.password}
           required
         />
+
         <Input
           type="password"
           placeholder="Confirm Password"
@@ -176,6 +175,7 @@ const UpdatePassPage = () => {
           error={errors.confirmPassword}
           required
         />
+
         <Button
           type="submit"
           variant="primary"
