@@ -6,6 +6,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isRecovering, setIsRecovering] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -21,7 +22,11 @@ export const AuthProvider = ({ children }) => {
       setUser(currentUser);
 
       if (event === "PASSWORD_RECOVERY") {
-        window.location.href = window.location.origin + "/update-password";
+        setIsRecovering(true);
+      }
+
+      if (event === "SIGNED_OUT" || event === "USER_UPDATED") {
+        setIsRecovering(false);
       }
     });
 
@@ -78,6 +83,7 @@ export const AuthProvider = ({ children }) => {
         user,
         isAuthenticated: !!user,
         loading,
+        isRecovering,
         signup,
         login,
         logout,

@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import Typography from "../Typography/Typography.jsx";
 
 const PublicOnlyRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading, isRecovering } = useAuth();
 
   if (loading) {
     return (
@@ -12,6 +12,11 @@ const PublicOnlyRoute = ({ children }) => {
       </div>
     );
   }
+
+  if (isRecovering) {
+    return <Navigate to="/update-password" replace />;
+  }
+
   if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />;
   }

@@ -17,13 +17,16 @@ import "./App.scss";
 
 const App = () => {
   const HomeRedirect = () => {
-    const { isAuthenticated, loading } = useAuth();
+    const { isAuthenticated, loading, isRecovering } = useAuth();
     if (loading)
       return (
         <div className="loading-text">
           <Typography variant="p2">Loading...</Typography>
         </div>
       );
+    if (isRecovering) {
+      return <Navigate to="/update-password" replace />;
+    }
     return isAuthenticated ? (
       <Navigate to="/dashboard" replace />
     ) : (
@@ -62,14 +65,7 @@ const App = () => {
                 </PublicOnlyRoute>
               }
             />
-            <Route
-              path="/update-password"
-              element={
-                <PublicOnlyRoute>
-                  <UpdatePassPage />
-                </PublicOnlyRoute>
-              }
-            />
+            <Route path="/update-password" element={<UpdatePassPage />} />
             <Route
               path="/dashboard"
               element={
