@@ -156,7 +156,6 @@ const ExpenseForm = ({ initialData = null, onSubmit, headerText = "" }) => {
           onChange={(e) => handleChange("recurrence", e.target.value)}
           options={[
             { value: "none", label: "None" },
-            { value: "daily", label: "Daily" },
             { value: "weekly", label: "Weekly" },
             { value: "monthly", label: "Monthly" },
           ]}
