@@ -115,7 +115,10 @@ const UpdatePassPage = () => {
         block: "center",
       });
     } else if (submitError && errorRef.current) {
-      errorRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+      errorRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
     }
   }, [submitError, successMessage]);
 
