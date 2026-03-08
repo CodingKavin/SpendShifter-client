@@ -13,7 +13,8 @@ import { supabase } from "../../utils/supabase.js";
 import "./UpdatePassPage.scss";
 
 const UpdatePassPage = () => {
-  const { updatePassword, logout } = useAuth();
+  const { updatePassword, logout, isRecovering, isAuthenticated, loading } =
+    useAuth();
   const [formData, setFormData] = useState({
     password: "",
     confirmPassword: "",
@@ -25,25 +26,28 @@ const UpdatePassPage = () => {
   const [submitError, setSubmitError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [validSession, setValidSession] = useState(false);
   const errorRef = useRef(null);
   const successRef = useRef(null);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (event === "PASSWORD_RECOVERY" && session) {
-          setValidSession(true);
-        } else {
-          navigate("/login");
-        }
-      },
-    );
+    if (loading) return;
 
-    return () => listener.subscription.unsubscribe();
-  }, [navigate]);
+    if (!isRecovering && !isAuthenticated) {
+      navigate("/login");
+    }
+  }, [loading, isRecovering, isAuthenticated, navigate]);
+
+  if (loading) {
+    return (
+      <div className="loading-text">
+        <Typography variant="p2">Loading...</Typography>
+      </div>
+    );
+  }
+
+  if (!isRecovering && !isAuthenticated) return null;
 
   const handleChange = (field, value) => {
     const updatedData = { ...formData, [field]: value };
@@ -114,8 +118,6 @@ const UpdatePassPage = () => {
       errorRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   }, [submitError, successMessage]);
-
-  if (!validSession) return null;
 
   return (
     <div className="update-password">

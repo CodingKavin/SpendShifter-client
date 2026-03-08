@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import Typography from "../Typography/Typography.jsx";
 
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading, isRecovering } = useAuth();
 
   if (loading) {
     return (
@@ -11,6 +11,10 @@ const ProtectedRoute = ({ children }) => {
         <Typography variant="p2">Loading...</Typography>
       </div>
     );
+  }
+
+  if (isRecovering) {
+    return <Navigate to="/update-password" replace />;
   }
 
   if (!isAuthenticated) {
