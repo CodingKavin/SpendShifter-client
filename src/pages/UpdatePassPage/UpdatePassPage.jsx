@@ -57,8 +57,8 @@ const UpdatePassPage = () => {
     );
   }
 
-  if (!isRecovering && !isAuthenticated) {
-    return <Navigate to="/login" replace />;
+  if (!isRecovering) {
+    return <Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />;
   }
 
   const handleChange = (field, value) => {
