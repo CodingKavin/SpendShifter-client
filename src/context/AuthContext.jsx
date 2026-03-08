@@ -1,13 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "../utils/supabase.js";
-import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -23,7 +21,7 @@ export const AuthProvider = ({ children }) => {
       setUser(currentUser);
 
       if (event === "PASSWORD_RECOVERY") {
-        navigate("/update-password");
+        window.location.href = window.location.origin + "/update-password";
       }
     });
 
