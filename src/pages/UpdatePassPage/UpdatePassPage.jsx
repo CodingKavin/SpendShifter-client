@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useLayoutEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
 import Typography from "../../components/Typography/Typography.jsx";
@@ -35,7 +35,7 @@ const UpdatePassPage = () => {
     if (loading) return;
 
     if (!isRecovering && !isAuthenticated) {
-      navigate("/login");
+      navigate("/login", { replace: true });
     }
   }, [loading, isRecovering, isAuthenticated, navigate]);
 
@@ -108,18 +108,22 @@ const UpdatePassPage = () => {
     }
   };
 
-  useLayoutEffect(() => {
-    if (successMessage && successRef.current) {
-      successRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    } else if (submitError && errorRef.current) {
-      errorRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (successMessage && successRef.current) {
+        successRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      } else if (submitError && errorRef.current) {
+        errorRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, [submitError, successMessage]);
 
   return (
