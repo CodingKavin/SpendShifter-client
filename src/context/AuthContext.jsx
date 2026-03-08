@@ -19,14 +19,18 @@ export const AuthProvider = ({ children }) => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       const currentUser = session?.user || null;
-      setUser(currentUser);
+      setUser((prevUser) =>
+        prevUser?.id !== currentUser?.id ? currentUser : prevUser,
+      );
 
       if (event === "PASSWORD_RECOVERY") {
         setIsRecovering(true);
       }
 
       if (event === "SIGNED_OUT" || event === "USER_UPDATED") {
-        setIsRecovering(false);
+        if (event !== "PASSWORD_RECOVERY") {
+          setIsRecovering(false);
+        }
       }
     });
 
@@ -56,7 +60,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
     if (error) throw error;
   };
 
