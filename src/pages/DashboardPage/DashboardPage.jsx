@@ -14,7 +14,7 @@ const DashboardPage = () => {
     String(new Date().getMonth() + 1).padStart(2, "0"),
   );
   const [year, setYear] = useState(String(new Date().getFullYear()));
-  const [budget, setBudget] = useState(1);
+  const [budget, setBudget] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [currentBudget, setCurrentBudget] = useState(0);
@@ -64,7 +64,7 @@ const DashboardPage = () => {
       );
       const fetchedBudget = budgetResp.data.budget?.amount ?? 0;
       setCurrentBudget(fetchedBudget);
-      setBudget(fetchedBudget);
+      setBudget(String(fetchedBudget));
     } catch (err) {
       setError(
         err.response?.data?.message ||
@@ -188,7 +188,7 @@ const DashboardPage = () => {
             placeholder="Enter Amount"
             className="dashboard__input"
             value={budget}
-            onChange={(e) => setBudget(Number(e.target.value))}
+            onChange={(e) => setBudget(e.target.value)}
             onBlur={handleBudgetBlur}
           />
           <Button
