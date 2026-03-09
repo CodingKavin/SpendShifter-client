@@ -128,7 +128,7 @@ const DashboardPage = () => {
       const payload = {
         month: Number(month),
         year: Number(year),
-        amount: Number(budget),
+        amount: Number(budget) || 0,
       };
 
       const response = await api.post("/budgets", payload);
