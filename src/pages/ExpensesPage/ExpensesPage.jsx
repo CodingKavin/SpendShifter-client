@@ -101,7 +101,7 @@ const ExpensesPage = () => {
 
   if (!expenses || expenses.length === 0) {
     return (
-      <main className="expenses">
+      <div className="expenses">
         <TablesHeader
           headerText="Expenses"
           buttonText="+ Add Expense"
@@ -118,12 +118,12 @@ const ExpensesPage = () => {
         <p style={{ display: "flex", justifyContent: "center" }}>
           No expenses available.
         </p>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className="expenses">
+    <div className="expenses">
       <TablesHeader
         headerText="Expenses"
         buttonText="+ Add Expense"
@@ -221,7 +221,7 @@ const ExpensesPage = () => {
           </Button>
         </div>
       </nav>
-    </main>
+    </div>
   );
 };
 
