@@ -26,7 +26,7 @@ Built with **React**, **Javascript**, and **Axios** for API communication.
 
 ## Project Structure
 
-````text
+```text
 src/
 ├── assets/      # Images, logos, icons
 ├── components/  # Reusable UI components
@@ -36,6 +36,7 @@ src/
 ├── styles/      # globals, style variables, media queries
 ├── utils/       # Axios instance, helpers
 └── App.jsx      # Main App component
+```
 
 ## Getting Started
 
@@ -51,7 +52,7 @@ src/
 git clone https://github.com/CodingKavin/SpendShifter-client.git
 cd SpendShifter-client
 npm install
-````
+```
 
 ### Related
 
