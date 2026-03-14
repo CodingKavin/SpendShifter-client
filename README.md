@@ -2,7 +2,7 @@
 
 This is the **frontend** of the SpendShifter application — a personal finance dashboard for tracking expenses, budgets, and recurring transactions.
 
-# url: https://spendshifter.com
+**URL:** [https://spendshifter.com](https://spendshifter.com)
 
 Built with **React**, **Javascript**, and **Axios** for API communication.
 
@@ -24,16 +24,18 @@ Built with **React**, **Javascript**, and **Axios** for API communication.
 - Custom hooks: `useSearch`, `useDeleteModal`
 - Custom components
 
-**Project Structure**
+## Project Structure
+
+````text
 src/
-├── assets/ # Images, logos, icons
-├── components/ # Reusable UI components
-├── context/ # Context providers like AuthContext
-├── hooks/ # Custom hooks
-├── pages/ # Page-level components
-├── styles/ # globals, style variables, media queries
-├── utils/ # Axios instance, helpers
-└── App.jsx # Main App component
+├── assets/      # Images, logos, icons
+├── components/  # Reusable UI components
+├── context/     # Context providers like AuthContext
+├── hooks/       # Custom hooks
+├── pages/       # Page-level components
+├── styles/      # globals, style variables, media queries
+├── utils/       # Axios instance, helpers
+└── App.jsx      # Main App component
 
 ## Getting Started
 
@@ -49,7 +51,7 @@ src/
 git clone https://github.com/CodingKavin/SpendShifter-client.git
 cd SpendShifter-client
 npm install
-```
+````
 
 ### Related
 
