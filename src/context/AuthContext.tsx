@@ -40,10 +40,8 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
         setIsRecovering(true);
       }
 
-      if (event === "SIGNED_OUT" || event === "USER_UPDATED") {
-        if (event !== "PASSWORD_RECOVERY") {
+      if (event === "SIGNED_OUT" || event === "USER_UPDATED" || event === "SIGNED_IN") {
           setIsRecovering(false);
-        }
       }
     });
 
@@ -56,7 +54,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
       password,
       options: {
         data: options.data || {},
-        redirectTo: options.redirectTo,
+        emailRedirectTo: options.redirectTo,
       },
     });
     if (error) throw error;
