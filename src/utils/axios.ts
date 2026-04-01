@@ -1,13 +1,13 @@
-import axios from "axios";
+import axios, { type InternalAxiosRequestConfig } from "axios";
 import { supabase } from "./supabase";
 
-const apiUrl = import.meta.env.VITE_API_BASE_URL;
+const apiUrl = import.meta.env.VITE_API_BASE_URL!;
 
 const api = axios.create({
   baseURL: apiUrl,
 });
 
-api.interceptors.request.use(async (config) => {
+api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
   const { data: { session } } = await supabase.auth.getSession();
 
   const token = session?.access_token;
