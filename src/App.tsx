@@ -1,18 +1,18 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider, useAuth } from "./context/AuthContext.jsx";
-import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
-import PublicOnlyRoute from "./components/PublicOnlyRoute/PublicOnlyRoute.jsx";
-import Navigation from "./components/Navigation/Navigation.jsx";
-import Footer from "./components/Footer/Footer.jsx";
-import SignupPage from "./pages/SignupPage/SignupPage.jsx";
-import LoginPage from "./pages/LoginPage/LoginPage.jsx";
-import ForgotPassPage from "./pages/ForgotPassPage/ForgotPassPage.jsx";
-import UpdatePassPage from "./pages/UpdatePassPage/UpdatePassPage.jsx";
-import DashboardPage from "./pages/DashboardPage/DashboardPage.jsx";
-import ExpensesPage from "./pages/ExpensesPage/ExpensesPage.jsx";
-import AddExpensePage from "./pages/AddExpensePage/AddExpensePage.jsx";
-import EditExpensePage from "./pages/EditExpensePage/EditExpensePage.jsx";
-import Typography from "./components/Typography/Typography.jsx";
+import { useAuth } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import PublicOnlyRoute from "./components/PublicOnlyRoute/PublicOnlyRoute";
+import Navigation from "./components/Navigation/Navigation";
+import Footer from "./components/Footer/Footer";
+import SignupPage from "./pages/SignupPage/SignupPage";
+import LoginPage from "./pages/LoginPage/LoginPage";
+import ForgotPassPage from "./pages/ForgotPassPage/ForgotPassPage";
+import UpdatePassPage from "./pages/UpdatePassPage/UpdatePassPage";
+import DashboardPage from "./pages/DashboardPage/DashboardPage";
+import ExpensesPage from "./pages/ExpensesPage/ExpensesPage";
+import AddExpensePage from "./pages/AddExpensePage/AddExpensePage";
+import EditExpensePage from "./pages/EditExpensePage/EditExpensePage";
+import Typography from "./components/Typography/Typography";
 import "./App.scss";
 
 const App = () => {
@@ -35,7 +35,6 @@ const App = () => {
   };
 
   return (
-    <AuthProvider>
       <BrowserRouter>
         <Navigation />
         <main>
@@ -104,7 +103,6 @@ const App = () => {
 
         <Footer />
       </BrowserRouter>
-    </AuthProvider>
   );
 };
 

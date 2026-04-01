@@ -1,12 +1,25 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { supabase } from "../utils/supabase.js";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { supabase } from "../utils/supabase";
+import { type User } from "@supabase/supabase-js";
 
-const AuthContext = createContext();
+interface AuthContextType {
+  user: User | null;
+  isAuthenticated: boolean;
+  loading: boolean;
+  isRecovering: boolean;
+  signup: (params: {email: string; password: string; options?: any}) => Promise<User | null>;
+  login: (params: { email: string; password: string }) => Promise<User | null>;
+  logout: () => Promise<void>;
+  resetPassword: (email: string) => Promise<object>;
+  updatePassword: (newPassword: string) => Promise<User | null>;
+}
 
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [isRecovering, setIsRecovering] = useState(false);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export const AuthProvider = ({ children }: {children: ReactNode}) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [isRecovering, setIsRecovering] = useState<boolean>(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -37,7 +50,7 @@ export const AuthProvider = ({ children }) => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signup = async ({ email, password, options = {} }) => {
+  const signup: AuthContextType['signup'] = async ({ email, password, options = {} }) => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -50,7 +63,7 @@ export const AuthProvider = ({ children }) => {
     return data.user;
   };
 
-  const login = async ({ email, password }) => {
+  const login: AuthContextType['login'] = async ({ email, password }) => {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -59,12 +72,12 @@ export const AuthProvider = ({ children }) => {
     return data.user;
   };
 
-  const logout = async () => {
+  const logout: AuthContextType['logout'] = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
   };
 
-  const resetPassword = async (email) => {
+  const resetPassword: AuthContextType['resetPassword'] = async (email) => {
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: window.location.origin + "/update-password",
     });
@@ -72,7 +85,7 @@ export const AuthProvider = ({ children }) => {
     return data;
   };
 
-  const updatePassword = async (newPassword) => {
+  const updatePassword: AuthContextType['updatePassword'] = async (newPassword) => {
     const { data, error } = await supabase.auth.updateUser({
       password: newPassword,
     });
@@ -100,4 +113,10 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error("useAuth must be within an AuthProvider");
+  }
+  return context;
+};
