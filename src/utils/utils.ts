@@ -1,10 +1,13 @@
-export const sortArrOfObj = (arr, sortBy, ascending = true) => {
+export const sortArrOfObj = <T>(arr: T[], sortBy: keyof T, ascending: boolean = true): T[] => {
   // Supports numbers, strings, and dates. Assumes no mixed data types.
 
   //using shallow copy of array because .sort mutates
   return [...arr].sort((a, b) => {
-    const valA = a[sortBy];
-    const valB = b[sortBy];
+    const valA = a[sortBy] as any;
+    const valB = b[sortBy] as any;
+
+    if (valA === null || valA === undefined) return 1;
+    if (valB === null || valB === undefined) return -1;
 
     // Handle numbers
     if (typeof valA === "number" && typeof valB === "number") {
@@ -19,10 +22,10 @@ export const sortArrOfObj = (arr, sortBy, ascending = true) => {
     }
 
     // Handle date strings
-    const dateA = new Date(valA);
-    const dateB = new Date(valB);
+    const dateA = new Date(valA as any);
+    const dateB = new Date(valB as any);
 
-    if (!isNaN(dateA) && !isNaN(dateB)) {
+    if (!isNaN(dateA.getTime()) && !isNaN(dateB.getTime()) && !Number(valA)) {
       return ascending
         ? dateA.getTime() - dateB.getTime()
         : dateB.getTime() - dateA.getTime();
@@ -30,7 +33,9 @@ export const sortArrOfObj = (arr, sortBy, ascending = true) => {
 
     // Handle strings
     if (typeof valA === "string" && typeof valB === "string") {
-      return ascending ? valA.localeCompare(valB) : valB.localeCompare(valA);
+      return ascending 
+        ? valA.localeCompare(valB, undefined, {numeric: true, sensitivity: 'base'}) 
+        : valB.localeCompare(valA, undefined, {numeric: true, sensitivity: 'base'});
     }
 
     return 0;
