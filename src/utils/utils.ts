@@ -25,7 +25,7 @@ export const sortArrOfObj = <T>(arr: T[], sortBy: keyof T, ascending: boolean = 
     const dateA = new Date(valA as any);
     const dateB = new Date(valB as any);
 
-    if (!isNaN(dateA.getTime()) && !isNaN(dateB.getTime()) && !Number(valA)) {
+    if (!isNaN(dateA.getTime()) && !isNaN(dateB.getTime()) && (typeof valA === 'string' || valA instanceof Date)) {
       return ascending
         ? dateA.getTime() - dateB.getTime()
         : dateB.getTime() - dateA.getTime();
