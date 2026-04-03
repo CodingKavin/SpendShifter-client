@@ -43,7 +43,7 @@ export const validateDescription = (description: string): string => {
 export const validateAmount = (amount: string | number): string => {
   const cleanAmount = String(amount).trim();
   if (!cleanAmount) return "Amount is required";
-  const regex = /^\d*(\.\d{1,2})?$/;
+  const regex = /^-?\d*(\.\d{1,2})?$/;
   if (!regex.test(cleanAmount) || cleanAmount === ".") {
     return "Amount must be a valid number with up to 2 decimal places";
   }
