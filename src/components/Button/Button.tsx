@@ -1,7 +1,13 @@
 import "./Button.scss";
-
-import "./Button.scss";
 import { Link } from "react-router-dom";
+import { type ReactNode, type ButtonHTMLAttributes } from "react";
+
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "primary" | "secondary" | "delete";
+  isLink?: boolean;
+  to?: string;
+  children: ReactNode;
+}
 
 const Button = ({
   type = "button",
@@ -12,13 +18,13 @@ const Button = ({
   className = "",
   children,
   ...props
-}) => {
+}: ButtonProps) => {
   let combinedClassName = "button button--" + variant;
   if (className) combinedClassName += " " + className;
 
-  if (isLink) {
+  if (isLink && to) {
     return (
-      <Link to={to} className={combinedClassName} {...props}>
+      <Link to={to} className={combinedClassName} {...props as any}>
         {children}
       </Link>
     );
