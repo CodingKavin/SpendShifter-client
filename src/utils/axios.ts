@@ -3,6 +3,8 @@ import { supabase } from "./supabase";
 
 const apiUrl = import.meta.env.VITE_API_BASE_URL!;
 
+if(!apiUrl) throw new Error("VITE_API_BASE_URL is not defined in the env variables")
+
 const api = axios.create({
   baseURL: apiUrl,
 });
