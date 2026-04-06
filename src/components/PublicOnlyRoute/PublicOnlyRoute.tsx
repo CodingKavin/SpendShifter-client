@@ -1,8 +1,13 @@
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../../context/AuthContext";
 import { Navigate } from "react-router-dom";
-import Typography from "../Typography/Typography.jsx";
+import {type FC, type ReactNode} from "react";
+import Typography from "../Typography/Typography";
 
-const PublicOnlyRoute = ({ children }) => {
+interface PublicOnlyRouteProps {
+  children: ReactNode;
+}
+
+const PublicOnlyRoute: FC<PublicOnlyRouteProps> = ({ children }) => {
   const { isAuthenticated, loading, isRecovering } = useAuth();
 
   if (loading) {
@@ -21,7 +26,7 @@ const PublicOnlyRoute = ({ children }) => {
     return <Navigate to="/dashboard" replace />;
   }
 
-  return children;
+  return <>{children}</>;
 };
 
 export default PublicOnlyRoute;
