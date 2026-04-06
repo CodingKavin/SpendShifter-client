@@ -6,8 +6,18 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  type PieLabelRenderProps,
 } from "recharts";
 import "./PieChart.scss";
+
+interface ChartDataItem {
+  category: string;
+  amount: number;
+}
+
+interface ExpensePieChartProps {
+  data: ChartDataItem[] | null | undefined;
+}
 
 const COLORS = [
   "#4F46E5",
@@ -18,9 +28,9 @@ const COLORS = [
   "#8B5CF6",
 ];
 
-const ExpensePieChart = ({ data }) => {
-  const [outerRadius, setOuterRadius] = useState(100);
-  const [chartKey, setChartKey] = useState(0);
+const ExpensePieChart = ({ data }: ExpensePieChartProps) => {
+  const [outerRadius, setOuterRadius] = useState<number>(100);
+  const [chartKey, setChartKey] = useState<number>(0);
 
   useEffect(() => {
     const updateRadius = () => {
@@ -37,13 +47,12 @@ const ExpensePieChart = ({ data }) => {
     return () => window.removeEventListener("resize", updateRadius);
   }, []);
 
-  const chartData =
-    data && data.length > 0 ? data : [{ category: "No Expenses", amount: 1 }];
+  const chartData: ChartDataItem[] =
+    !!(data && data.length > 0) ? (data as ChartDataItem[]) : [{ category: "No Expenses", amount: 1 }];
 
-  const chartColors = data && data.length > 0 ? COLORS : ["#E5E7EB"]; // gray for empty
+  const chartColors = !!(data && data.length > 0) ? COLORS : ["#E5E7EB"];
 
-  const renderPieLabel = ({ value, percent, name }) => {
-    // if (!value || percent < 0.01) return null;
+  const renderPieLabel = ({ value }: PieLabelRenderProps) => {
     return `$${value}`;
   };
 
@@ -59,9 +68,10 @@ const ExpensePieChart = ({ data }) => {
               cx="50%"
               cy="50%"
               outerRadius={outerRadius}
-              label={data && data.length > 0 ? renderPieLabel : false}
+              label={!!(data && data.length > 0) ? renderPieLabel : false}
             >
               {chartData.map((_, index) => (
+                // @ts-ignore - Recharts internal deprecation warning
                 <Cell
                   key={`cell-${index}`}
                   fill={chartColors[index % chartColors.length]}
