@@ -1,11 +1,8 @@
 import { useState } from "react";
 import api from "../utils/axios";
+import {type BaseRecord} from "../types/types";
 
-interface Identifiable {
-  id: string | number;
-}
-
-export const useDeleteModal = <T extends Identifiable>(endpoint: string, setData: (data: T[]) => void) => {
+export const useDeleteModal = <T extends BaseRecord>(endpoint: string, setData: (data: T[]) => void) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [deleteItem, setDeleteItem] = useState<T | null>(null);
 

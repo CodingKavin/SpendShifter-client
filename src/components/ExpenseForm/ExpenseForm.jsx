@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Input from "../Input/Input.jsx";
-import SelectInput from "../Input/SelectInput.jsx";
-import Button from "../Button/Button.jsx";
-import PageHeader from "../../components/PageHeader/PageHeader.jsx";
+import Input from "../Input/Input";
+import SelectInput from "../Input/SelectInput";
+import Button from "../Button/Button";
+import PageHeader from "../../components/PageHeader/PageHeader";
 import {
   validateAmount,
   validateDescription,
