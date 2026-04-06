@@ -1,11 +1,15 @@
 import { useState } from "react";
-import api from "../utils/axios.js";
+import api from "../utils/axios";
 
-export const useDeleteModal = (endpoint, setData) => {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [deleteItem, setDeleteItem] = useState(null);
+interface Identifiable {
+  id: string | number;
+}
 
-  const openDeleteModal = (item) => {
+export const useDeleteModal = <T extends Identifiable>(endpoint: string, setData: (data: T[]) => void) => {
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [deleteItem, setDeleteItem] = useState<T | null>(null);
+
+  const openDeleteModal = (item: T) => {
     setDeleteItem(item);
     setModalOpen(true);
   };
@@ -20,7 +24,7 @@ export const useDeleteModal = (endpoint, setData) => {
 
     try {
       await api.delete(`${endpoint}/${deleteItem.id}`);
-      const response = await api.get(`${endpoint}`);
+      const response = await api.get<T[]>(`${endpoint}`);
       setData(response.data);
     } catch (error) {
       console.error("failed to delete item");
