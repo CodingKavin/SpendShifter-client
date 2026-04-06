@@ -4,8 +4,8 @@ import "./Footer.scss";
 const Footer = () => {
   return (
     <footer className="footer">
-      <Typography variant="p" className="footer__copy">
-        &copy; SpendShifter Inc. All Rights Reserved.
+      <Typography variant="p3" className="footer__copy">
+        &copy; {new Date().getFullYear()} SpendShifter Inc. Made by Kavin Paul.
       </Typography>
     </footer>
   );
