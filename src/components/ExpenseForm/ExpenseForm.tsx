@@ -1,20 +1,33 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "../Input/Input";
 import SelectInput from "../Input/SelectInput";
 import Button from "../Button/Button";
-import PageHeader from "../../components/PageHeader/PageHeader";
+import PageHeader from "../PageHeader/PageHeader";
 import {
   validateAmount,
   validateDescription,
   validateDate,
 } from "../../utils/validation.js";
+import type { ExpenseFormData, ExpenseCategory, RecurrenceType } from "../../types/types";
 import "./ExpenseForm.scss";
 
-const ExpenseForm = ({ initialData = null, onSubmit, headerText = "" }) => {
+interface ExpenseFormProps {
+  initialData?: ExpenseFormData | null;
+  onSubmit: (data: ExpenseFormData) => void;
+  headerText: string;
+}
+
+interface FormErrors {
+  amount: string;
+  description: string;
+  date: string;
+}
+
+const ExpenseForm = ({ initialData = null, onSubmit, headerText = "" }: ExpenseFormProps) => {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ExpenseFormData>({
     category: initialData?.category || "Food",
     amount: initialData?.amount || "",
     date: initialData?.date || "",
@@ -22,7 +35,7 @@ const ExpenseForm = ({ initialData = null, onSubmit, headerText = "" }) => {
     recurrence: initialData?.recurrence || "none",
   });
 
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<FormErrors>({
     amount: "",
     description: "",
     date: "",
@@ -33,14 +46,14 @@ const ExpenseForm = ({ initialData = null, onSubmit, headerText = "" }) => {
   useEffect(() => {
     if (!initialData) return;
 
-    const changed = Object.keys(formData).some(
+    const changed = (Object.keys(formData) as Array<keyof ExpenseFormData>).some(
       (key) => formData[key] !== initialData[key],
     );
 
     setIsDirty(changed);
   }, [formData, initialData]);
 
-  const handleChange = (field, value) => {
+  const handleChange = (field: keyof ExpenseFormData, value: string) => {
     let updatedValue = value;
 
     if (field === "description") {
@@ -48,9 +61,10 @@ const ExpenseForm = ({ initialData = null, onSubmit, headerText = "" }) => {
     }
 
     if (field === "amount") {
-      const parts = value.split(".");
-      if (parts[1]?.length > 2) {
-        updatedValue = parts[0] + "." + parts[1].slice(0, 2);
+    const [whole, decimal] = value.split(".");
+
+      if (decimal && decimal.length > 2) {
+        updatedValue = `${whole}.${decimal.slice(0, 2)}`;
       }
     }
 
@@ -83,7 +97,7 @@ const ExpenseForm = ({ initialData = null, onSubmit, headerText = "" }) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const amountError = validateAmount(formData.amount);
@@ -119,7 +133,7 @@ const ExpenseForm = ({ initialData = null, onSubmit, headerText = "" }) => {
           label="Category"
           className="expense-form__field"
           value={formData.category}
-          onChange={(e) => handleChange("category", e.target.value)}
+          onChange={(e: ChangeEvent<HTMLSelectElement>) => handleChange("category", e.target.value as ExpenseCategory)}
           options={[
             { value: "Food", label: "Food" },
             { value: "Transportation", label: "Transportation" },
@@ -135,7 +149,7 @@ const ExpenseForm = ({ initialData = null, onSubmit, headerText = "" }) => {
           className="expense-form__field"
           type="text"
           value={formData.amount}
-          onChange={(e) => handleChange("amount", e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange("amount", e.target.value)}
           error={errors.amount}
           placeholder="0.00"
         />
@@ -145,7 +159,7 @@ const ExpenseForm = ({ initialData = null, onSubmit, headerText = "" }) => {
           className="expense-form__field"
           type="date"
           value={formData.date}
-          onChange={(e) => handleChange("date", e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange("date", e.target.value)}
           error={errors.date}
         />
 
@@ -153,7 +167,7 @@ const ExpenseForm = ({ initialData = null, onSubmit, headerText = "" }) => {
           label="Recurrence"
           className="expense-form__field"
           value={formData.recurrence}
-          onChange={(e) => handleChange("recurrence", e.target.value)}
+          onChange={(e: ChangeEvent<HTMLSelectElement>) => handleChange("recurrence", e.target.value as RecurrenceType)}
           options={[
             { value: "none", label: "None" },
             { value: "weekly", label: "Weekly" },
@@ -166,7 +180,7 @@ const ExpenseForm = ({ initialData = null, onSubmit, headerText = "" }) => {
           className="expense-form__field"
           type="text"
           value={formData.description}
-          onChange={(e) => handleChange("description", e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange("description", e.target.value)}
           error={errors.description}
         />
       </div>
@@ -175,7 +189,7 @@ const ExpenseForm = ({ initialData = null, onSubmit, headerText = "" }) => {
         <Button
           type="submit"
           disabled={
-            errors.amount || errors.description || (initialData && !isDirty)
+            !!(errors.amount || errors.description || errors.date || (initialData && !isDirty))
           }
         >
           {initialData ? "Update Expense" : "Add Expense"}
