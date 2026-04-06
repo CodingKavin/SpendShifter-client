@@ -124,7 +124,6 @@ const ExpenseForm = ({ initialData = null, onSubmit, headerText = "" }: ExpenseF
   return (
     <form className="expense-form" onSubmit={handleSubmit}>
       <PageHeader
-        variant="noedit"
         headerText={headerText}
         onBack={goToExpenses}
       />
