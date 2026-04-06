@@ -1,3 +1,4 @@
+import type { SVGProps} from "react";
 import "./Iconography.scss";
 
 const iconPaths = {
@@ -58,7 +59,15 @@ const iconPaths = {
   ),
 };
 
-const Icon = ({ name, className = "", isActive = false, ...props }) => {
+export type IconName = keyof typeof iconPaths;
+
+interface IconProps extends SVGProps<SVGSVGElement> {
+  name: IconName;
+  isActive?: boolean;
+  className?: string;
+}
+
+const Icon = ({ name, className = "", isActive = false, ...props }: IconProps) => {
   const icon = iconPaths[name];
 
   if (!icon) return null;
