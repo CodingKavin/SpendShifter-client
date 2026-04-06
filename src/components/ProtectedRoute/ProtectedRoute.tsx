@@ -1,8 +1,13 @@
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../../context/AuthContext";
 import { Navigate } from "react-router-dom";
-import Typography from "../Typography/Typography.jsx";
+import {type FC, type ReactNode} from "react";
+import Typography from "../Typography/Typography";
 
-const ProtectedRoute = ({ children }) => {
+interface ProtectedRouteProps {
+  children: ReactNode;
+}
+
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const { isAuthenticated, loading, isRecovering } = useAuth();
 
   if (loading) {
@@ -21,7 +26,7 @@ const ProtectedRoute = ({ children }) => {
     return <Navigate to="/login" replace />;
   }
 
-  return children;
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;
