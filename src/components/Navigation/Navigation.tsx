@@ -1,7 +1,7 @@
 import { Link, useNavigate, NavLink } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
-import { useAuth } from "../../context/AuthContext.jsx";
-import Typography from "../Typography/Typography.jsx";
+import { useAuth } from "../../context/AuthContext";
+import Typography from "../Typography/Typography";
 import logo from "../../assets/Logo/SpendShifter_logo.svg";
 import profile from "../../assets/Icons/profile.svg";
 import "./Navigation.scss";
@@ -10,10 +10,10 @@ const Navigation = () => {
   const navigate = useNavigate();
   const { logout, isAuthenticated } = useAuth();
 
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [isTabletOpen, setIsTabletOpen] = useState(false);
-  const mobileRef = useRef(null);
-  const tabletRef = useRef(null);
+  const [isMobileOpen, setIsMobileOpen] = useState<boolean>(false);
+  const [isTabletOpen, setIsTabletOpen] = useState<boolean>(false);
+  const mobileRef = useRef<HTMLDivElement | null>(null);
+  const tabletRef = useRef<HTMLDivElement | null>(null);
 
   const toggleMobile = () => setIsMobileOpen((prev) => !prev);
   const toggleTablet = () => setIsTabletOpen((prev) => !prev);
@@ -31,11 +31,12 @@ const Navigation = () => {
   }, [isAuthenticated]);
 
   useEffect(() => {
-    const handlePointerDown = (event) => {
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target as Node;
       const clickedOutsideMobile =
-        !mobileRef.current || !mobileRef.current.contains(event.target);
+        !mobileRef.current || !mobileRef.current.contains(target);
       const clickedOutsideTablet =
-        !tabletRef.current || !tabletRef.current.contains(event.target);
+        !tabletRef.current || !tabletRef.current.contains(target);
 
       if (clickedOutsideMobile && clickedOutsideTablet) {
         setIsMobileOpen(false);
@@ -43,7 +44,7 @@ const Navigation = () => {
       }
     };
 
-    const handleEscape = (event) => {
+    const handleEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setIsMobileOpen(false);
         setIsTabletOpen(false);
@@ -81,7 +82,7 @@ const Navigation = () => {
             >
               <img
                 src={profile}
-                alt="SpendShifter Logo"
+                alt="Profile Icon"
                 className="navbar__icon navbar__icon--profile"
               />
             </button>
@@ -137,7 +138,7 @@ const Navigation = () => {
             >
               <img
                 src={profile}
-                alt="SpendShifter Logo"
+                alt="Profile Icon"
                 className="navbar__icon navbar__icon--profile"
               />
             </button>
