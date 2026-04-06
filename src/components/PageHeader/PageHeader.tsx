@@ -1,8 +1,14 @@
-import Typography from "../Typography/Typography.jsx";
-import Iconography from "../Iconography/Iconography.jsx";
+import Typography from "../Typography/Typography";
+import Iconography from "../Iconography/Iconography";
 import "./PageHeader.scss";
 
-const PageHeader = ({ headerText, onBack }) => {
+interface PageHeaderProps {
+  headerText: string;
+  onBack: () => void;
+}
+
+
+const PageHeader = ({ headerText, onBack }: PageHeaderProps) => {
   return (
     <div className="page-header">
       <div className="page-header__side">
