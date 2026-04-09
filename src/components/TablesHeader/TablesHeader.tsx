@@ -1,10 +1,19 @@
-import { useState } from "react";
-import Typography from "../Typography/Typography.jsx";
-import Iconography from "../Iconography/Iconography.jsx";
-import Button from "../Button/Button.jsx";
+import { useState, type FC, type KeyboardEvent, type Dispatch, type SetStateAction } from "react";
+import Typography from "../Typography/Typography";
+import Iconography from "../Iconography/Iconography";
+import Button from "../Button/Button";
 import "./TablesHeader.scss";
 
-const TablesHeader = ({
+interface TablesHeaderProps {
+  headerText: string;
+  buttonText: string;
+  onButtonClick: () => void;
+  searchString: string;
+  setSearchString: Dispatch<SetStateAction<string>> | ((val: string) => void);
+  disabled?: boolean;
+}
+
+const TablesHeader: FC<TablesHeaderProps> = ({
   headerText,
   buttonText,
   onButtonClick,
@@ -12,9 +21,9 @@ const TablesHeader = ({
   setSearchString,
   disabled = false,
 }) => {
-  const [input, setInput] = useState(searchString || "");
+  const [input, setInput] = useState<string>(searchString || "");
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       setSearchString(input);
     }
@@ -42,6 +51,7 @@ const TablesHeader = ({
         <button
           type="button"
           className="table-header__search-icon-button"
+          aria-label="Submit search"
           onClick={handleSearchClick}
         >
           <Iconography name="search" className="table-header__search-icon" />
