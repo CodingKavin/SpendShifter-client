@@ -1,8 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, type To } from "react-router-dom";
+import {type FC, type MouseEventHandler} from "react";
 import Iconography from "../Iconography/Iconography";
 import "./TableCard.scss";
 
-const TableCardActions = ({ editTo, onDelete, className = "" }) => {
+interface TableCardActionsProps {
+  editTo: To;
+  onDelete: MouseEventHandler<HTMLButtonElement>;
+  className?: String;
+}
+
+const TableCardActions: FC<TableCardActionsProps> = ({ editTo, onDelete, className = "" }) => {
   return (
     <div className={`card__actions ${className}`}>
       <button
