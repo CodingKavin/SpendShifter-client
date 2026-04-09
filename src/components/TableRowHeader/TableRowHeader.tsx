@@ -1,7 +1,7 @@
-import Iconography from "../Iconography/Iconography.jsx";
-import Typography from "../Typography/Typography.jsx";
-import { sortArrOfObj } from "../../utils/utils.js";
-import { useState } from "react";
+import Iconography from "../Iconography/Iconography";
+import Typography from "../Typography/Typography";
+import { sortArrOfObj } from "../../utils/utils";
+import { useState, type FC, type Dispatch, type SetStateAction } from "react";
 import "./TableRowHeader.scss";
 
 /* 
@@ -9,7 +9,7 @@ import "./TableRowHeader.scss";
   attached and an appended final column called ACTIONS. 
 * Also passes an onSort function as prop which will be called with header as parameter for the sort function
   of each row header as defined in the parent component.
-* Do not pass ACTIONS column header in the array. Currently ACTIONS is set to have a flex ratio of 0.75. We can update this if needed.
+* Do not pass ACTIONS column header in the array. Currently ACTIONS is set to have a flex ratio of 0.75. Can be updated when needed.
 * EXAMPLE HEADERS ARRAY
 const headers = [
     { label: "WAREHOUSE", key: "warehouse_name", flex: 1.25 },
@@ -19,13 +19,30 @@ const headers = [
 ];
 */
 
-const TableRowHeader = ({ headers = [], data = [], setData }) => {
-  const [sortState, setSortState] = useState({
+export interface TableHeader {
+  label: string;
+  key: string;
+  flex:number;
+}
+
+interface TableRowHeaderProps<T> {
+  headers: TableHeader[];
+  data: T[];
+  setData: Dispatch<SetStateAction<T[]>>;
+}
+
+interface SortState {
+  column: string | null;
+  ascending: boolean;
+}
+
+const TableRowHeader = <T extends Record<string, any>>({ headers = [], data = [], setData }: TableRowHeaderProps<T>) => {
+  const [sortState, setSortState] = useState<SortState>({
     column: null,
     ascending: true,
   });
 
-  const onSort = (key) => {
+  const onSort = (key: string) => {
     const ascending = sortState.column === key ? !sortState.ascending : true;
     const sortedArray = sortArrOfObj(data, key, ascending);
     setData(sortedArray);
