@@ -1,27 +1,42 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type FC, type ChangeEvent, type SubmitEvent } from "react";
+import type {ExpenseCategory, Budget} from "../../types/types";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext.jsx";
-import Typography from "../../components/Typography/Typography.jsx";
-import Input from "../../components/Input/Input.jsx";
-import SelectInput from "../../components/Input/SelectInput.jsx";
-import Button from "../../components/Button/Button.jsx";
-import PieChart from "../../components/PieChart/PieChart.jsx";
+import { useAuth } from "../../context/AuthContext";
+import Typography from "../../components/Typography/Typography";
+import Input from "../../components/Input/Input";
+import SelectInput from "../../components/Input/SelectInput";
+import Button from "../../components/Button/Button";
+import PieChart from "../../components/PieChart/PieChart";
 import "./DashboardPage.scss";
-import api from "../../utils/axios.js";
+import api from "../../utils/axios";
+
+interface CategorySummary {
+  category: string;
+  total: number;
+}
+
+interface ExpenseSummary {
+  total: number;
+  byCategory: CategorySummary[];
+}
+
+interface BudgetResponse {
+  budget: Budget | null; 
+}
 
 const DashboardPage = () => {
   const [month, setMonth] = useState(
     String(new Date().getMonth() + 1).padStart(2, "0"),
   );
   const [year, setYear] = useState(String(new Date().getFullYear()));
-  const [budget, setBudget] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [currentBudget, setCurrentBudget] = useState(0);
-  const [currentSpending, setCurrentSpending] = useState(0);
-  const [categoryData, setCategoryData] = useState([]);
-  const [changePercent, setChangePercent] = useState(0);
-  const [changeDirection, setChangeDirection] = useState("neutral");
+  const [budget, setBudget] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+  const [currentBudget, setCurrentBudget] = useState<number>(0);
+  const [currentSpending, setCurrentSpending] = useState<number>(0);
+  const [categoryData, setCategoryData] = useState<CategorySummary[]>([]);
+  const [changePercent, setChangePercent] = useState<number>(0);
+  const [changeDirection, setChangeDirection] = useState<"up" | "down" | "neutral">("neutral");
   const navigate = useNavigate();
 
   const fetchDashboardData = async () => {
@@ -32,7 +47,7 @@ const DashboardPage = () => {
       const monthNum = Number(month);
       const yearNum = Number(year);
 
-      const summaryResp = await api.get(
+      const summaryResp = await api.get<ExpenseSummary>(
         `/expenses/summary?month=${monthNum}&year=${yearNum}`,
       );
       const summary = summaryResp.data;
@@ -42,7 +57,7 @@ const DashboardPage = () => {
       const lastMonth = monthNum === 1 ? 12 : monthNum - 1;
       const lastMonthYear = monthNum === 1 ? yearNum - 1 : yearNum;
 
-      const lastMonthResp = await api.get(
+      const lastMonthResp = await api.get<ExpenseSummary>(
         `/expenses/summary?month=${lastMonth}&year=${lastMonthYear}`,
       );
       const lastMonthSpending = lastMonthResp.data.total || 0;
@@ -59,13 +74,13 @@ const DashboardPage = () => {
         diffPercent > 0 ? "up" : diffPercent < 0 ? "down" : "neutral",
       );
 
-      const budgetResp = await api.get(
+      const budgetResp = await api.get<BudgetResponse>(
         `/budgets?month=${monthNum}&year=${yearNum}`,
       );
       const fetchedBudget = budgetResp.data.budget?.amount ?? 0;
       setCurrentBudget(fetchedBudget);
       setBudget(String(fetchedBudget));
-    } catch (err) {
+    } catch (err: any) {
       setError(
         err.response?.data?.message ||
           err.message ||
@@ -119,7 +134,7 @@ const DashboardPage = () => {
     setBudget(rounded.toFixed(2));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       setLoading(true);
@@ -131,22 +146,22 @@ const DashboardPage = () => {
         amount: Number(budget) || 0,
       };
 
-      const response = await api.post("/budgets", payload);
+      const response = await api.post<BudgetResponse>("/budgets", payload);
       fetchDashboardData();
       console.log("Budget updated:", response.data);
-      setCurrentBudget(response.data.budget.amount);
-    } catch (error) {
+      setCurrentBudget(response.data.budget?.amount ?? 0);
+    } catch (error: any) {
       setError(error.response?.data?.message || error.message);
     } finally {
       setLoading(false);
     }
   };
 
-  let progressWidth =
+  let progressWidth: number =
     currentBudget > 0
       ? Math.min((currentSpending / currentBudget) * 100, 100)
       : 0;
-  let progressStatus;
+  let progressStatus: "good" | "warn" | "over";
 
   if (currentSpending / currentBudget < 0.75) {
     progressStatus = "good";
@@ -165,7 +180,7 @@ const DashboardPage = () => {
         <Typography variant="h1" className="dashboard__header-title">
           Welcome {userName}!
         </Typography>
-        <form className="dashboard__form">
+        <form className="dashboard__form" onSubmit={handleSubmit}>
           <SelectInput
             label={<Typography variant="p1">Month</Typography>}
             value={month}
@@ -192,8 +207,8 @@ const DashboardPage = () => {
             onBlur={handleBudgetBlur}
           />
           <Button
+            type="submit"
             variant="primary"
-            onClick={handleSubmit}
             disabled={loading}
             className="dashboard__reset-btn"
           >
