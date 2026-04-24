@@ -5,7 +5,7 @@ import Input from "./Input";
 describe("Input Component", () => {
   const mockOnChange = vi.fn();
 
-  it("renders with a label and links it to the input via ID", () => {
+  it("renders with a string label and links it to the input via generated ID", () => {
     render(<Input label="Total Amount" onChange={mockOnChange} value="" />);
     
     const labelElement = screen.getByText("Total Amount");
@@ -13,14 +13,25 @@ describe("Input Component", () => {
 
     const inputElement = screen.getByLabelText("Total Amount") as HTMLInputElement;
     expect(inputElement.id).toBe("total-amount");
-    expect(inputElement).toBeDefined();
   });
 
-  it("uses a custom ID if provided instead of generating one", () => {
+  it("prioritizes a custom ID over a generated one", () => {
     render(<Input label="Email" id="custom-email-id" onChange={mockOnChange} value="" />);
     
     const inputElement = screen.getByLabelText("Email") as HTMLInputElement;
     expect(inputElement.id).toBe("custom-email-id");
+  });
+
+  it("renders correctly when the label is a React component", () => {
+    render(
+      <Input 
+        label={<span>Complex Label</span>} 
+        onChange={mockOnChange} 
+        value="" 
+      />
+    );
+  
+    expect(screen.getByText("Complex Label")).toBeDefined();
   });
 
   it("updates the value correctly when the user types", () => {
