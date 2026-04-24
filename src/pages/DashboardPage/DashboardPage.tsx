@@ -180,7 +180,7 @@ const DashboardPage = () => {
         <Typography variant="h1" className="dashboard__header-title">
           Welcome {userName}!
         </Typography>
-        <form className="dashboard__form" onSubmit={handleSubmit}>
+        <form className="dashboard__form" onSubmit={handleSubmit} aria-label="budget-form">
           <SelectInput
             label={<Typography variant="p1">Month</Typography>}
             value={month}
