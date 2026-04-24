@@ -97,9 +97,15 @@ describe('Validation Utilities', () => {
   });
 
   describe('validateDate()', () => {
-    it('passes valid date strings and Date objects', () => {
-      expect(validateDate("2024-04-01")).toBe("");
+    it('passes valid dates on or after Jan 1, 2016', () => {
+      expect(validateDate("2016-01-01")).toBe("");
+      expect(validateDate("2026-04-23")).toBe("");
       expect(validateDate(new Date())).toBe("");
+    });
+
+    it('rejects dates before Jan 1, 2016', () => {
+      expect(validateDate("2015-12-31")).toBe("Date must be on or after January 1, 2016");
+      expect(validateDate("1999-01-01")).toBe("Date must be on or after January 1, 2016");
     });
 
     it('rejects invalid dates', () => {

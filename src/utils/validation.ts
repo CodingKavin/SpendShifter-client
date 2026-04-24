@@ -57,7 +57,27 @@ export const validateAmount = (amount: string | number): string => {
 
 export const validateDate = (date: string | Date): string => {
   if (!date) return "Date is required";
-  const parsed = date instanceof Date ? date: new Date(date);
+  let parsed = date instanceof Date ? date: new Date(date);
+  if (typeof date === "string") {
+    const parts = date.split("-");
+    const year = Number(parts[0]);
+    const month = Number(parts[1]);
+    const day = Number(parts[2]);
+
+    if (isNaN(year) || isNaN(month) || isNaN(day)) {
+      return "Invalid date";
+    }
+
+    parsed = new Date(year, month - 1, day);
+  } else {
+    parsed = new Date(date);
+  }
   if (isNaN(parsed.getTime())) return "Invalid date";
+  parsed.setHours(0, 0, 0, 0);
+  const minDate = new Date(2016, 0, 1);
+  minDate.setHours(0, 0, 0, 0);
+  if (parsed < minDate) {
+    return "Date must be on or after January 1, 2016";
+  }
   return "";
 };
