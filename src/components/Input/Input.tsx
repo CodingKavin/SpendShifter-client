@@ -1,7 +1,8 @@
+import type {ReactNode} from "react";
 import "./Input.scss";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
+  label?: ReactNode;
   error?: string;
 }
 
@@ -18,7 +19,7 @@ const Input = ({
   ...props
 }: InputProps) => {
   
-  const inputId = id || label?.toLowerCase().replace(/\s+/g, "-");
+  const inputId = id || (typeof label === "string" ? label?.toLowerCase().replace(/\s+/g, "-"): id);
 
   return (
     <div className="input__wrapper">
