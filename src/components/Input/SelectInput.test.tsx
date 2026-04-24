@@ -10,7 +10,7 @@ describe("SelectInput Component", () => {
   ];
   const mockOnChange = vi.fn();
 
-  it("renders with a label and links it to the select element via ID", () => {
+  it("renders with a string label and links it to the select element via generated ID", () => {
     render(
       <SelectInput 
         label="Category" 
@@ -23,6 +23,34 @@ describe("SelectInput Component", () => {
     const selectElement = screen.getByLabelText("Category") as HTMLSelectElement;
     expect(selectElement.id).toBe("category");
     expect(selectElement.tagName).toBe("SELECT");
+  });
+
+  it("prioritizes a custom ID over a generated one", () => {
+    render(
+      <SelectInput 
+        label="Category" 
+        id="custom-select-id"
+        options={mockOptions} 
+        onChange={mockOnChange} 
+        value="food" 
+      />
+    );
+    
+    const selectElement = screen.getByLabelText("Category") as HTMLSelectElement;
+    expect(selectElement.id).toBe("custom-select-id");
+  });
+
+  it("renders correctly when the label is a React component", () => {
+    render(
+      <SelectInput 
+        label={<span>Complex Category</span>} 
+        options={mockOptions} 
+        onChange={mockOnChange} 
+        value="food" 
+      />
+    );
+  
+    expect(screen.getByText("Complex Category")).toBeDefined();
   });
 
   it("renders the correct number of options from the props", () => {
