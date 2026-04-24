@@ -1,3 +1,4 @@
+import type {ReactNode} from "react";
 import "./Input.scss";
 
 interface Option {
@@ -6,7 +7,7 @@ interface Option {
 }
 
 interface SelectInputProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  label?: string;
+  label?: ReactNode;
   options: Option[];
   error?: string;
 }
@@ -22,7 +23,7 @@ const SelectInput = ({
   id,
   ...props
 }: SelectInputProps) => {
-  const selectId = id || label?.toLowerCase().replace(/\s+/g, "-");
+  const selectId = id || (typeof label === "string" ? label.toLowerCase().replace(/\s+/g, "-") : id);
 
   return (
     <div className="input__wrapper">
