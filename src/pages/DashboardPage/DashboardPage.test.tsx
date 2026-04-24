@@ -102,7 +102,7 @@ describe("DashboardPage", () => {
     await waitFor(() => screen.getByPlaceholderText(/Enter Amount/i));
 
     const input = screen.getByPlaceholderText(/Enter Amount/i);
-    const form = screen.getByRole("form");
+    const form = screen.getByRole("form", { name: /budget-form/i });
 
     fireEvent.change(input, { target: { value: "1500" } });
     fireEvent.submit(form);
