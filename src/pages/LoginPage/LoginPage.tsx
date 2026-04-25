@@ -1,35 +1,34 @@
 import { useState, useRef, useLayoutEffect } from "react";
-import { useAuth } from "../../context/AuthContext.jsx";
+import type {SubmitEvent, ChangeEvent} from "react";
+import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import Typography from "../../components/Typography/Typography.jsx";
-import Input from "../../components/Input/Input.jsx";
-import Button from "../../components/Button/Button.jsx";
+import Typography from "../../components/Typography/Typography";
+import Input from "../../components/Input/Input";
+import Button from "../../components/Button/Button";
 import logo from "../../assets/Logo/SpendShifter_logo.svg";
 import "./LoginPage.scss";
 
 const LoginPage = () => {
   const { login } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-  const [submitting, setSubmitting] = useState(false);
-  const errorRef = useRef(null);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  const errorRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitting(true);
     setError(null);
 
     try {
-      await login({ email, password });
+      await login({ email: email.trim(), password });
       navigate("/dashboard");
-    } catch (error) {
+    } catch (error: any) {
       const safeMessage =
         error?.message ||
-        error?.error_description ||
-        error?.hint ||
-        "Login failed";
+        "Invalid email or password.";
       setError(safeMessage);
     } finally {
       setSubmitting(false);
@@ -49,7 +48,7 @@ const LoginPage = () => {
       </Typography>
 
       {error && (
-        <Typography ref={errorRef} variant="p2" className="login__error">
+        <Typography ref={errorRef} variant="p2" className="login__error" role="alert">
           {error}
         </Typography>
       )}
@@ -63,7 +62,7 @@ const LoginPage = () => {
           placeholder="Email"
           className="login__form-input"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
           required
         />
         <div>
