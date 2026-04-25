@@ -1,9 +1,9 @@
-import { useState, useRef, useLayoutEffect } from "react";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useState, useRef, useLayoutEffect, type SubmitEvent, type ChangeEvent } from "react";
+import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
-import Typography from "../../components/Typography/Typography.jsx";
-import Input from "../../components/Input/Input.jsx";
-import Button from "../../components/Button/Button.jsx";
+import Typography from "../../components/Typography/Typography";
+import Input from "../../components/Input/Input";
+import Button from "../../components/Button/Button";
 import logo from "../../assets/Logo/SpendShifter_logo.svg";
 import "./ForgotPassPage.scss";
 
@@ -11,28 +11,28 @@ import "./ForgotPassPage.scss";
 const ForgotPassPage = () => {
 
     const { resetPassword } = useAuth();
-    const [email, setEmail] = useState("");
-    const [message, setMessage] = useState(null);
-    const [error, setError] = useState(null);
-    const [submitting, setSubmitting] = useState(false);
-    const errorRef = useRef(null);
-    const successRef = useRef(null);
+    const [email, setEmail] = useState<string>("");
+    const [message, setMessage] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const [submitting, setSubmitting] = useState<boolean>(false);
+    const errorRef = useRef<HTMLDivElement>(null);
+    const successRef = useRef<HTMLDivElement>(null);
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         setSubmitting(true);
         setError(null);
         setMessage(null);
 
         try {
-            await resetPassword(email);
-            setMessage("Check your email for a password reset link.");
-        } catch (error) {
-            const safeMessage = error?.message || error?.error_description || error?.hint || "Something went wrong."
+            await resetPassword(email.trim());
+            setMessage("If email is in our system, you will receive a reset link shortly");
+            setEmail("");
+        } catch (error: any) {
+            const safeMessage = error?.message || "Something went wrong."
             setError(safeMessage);
         } finally {
             setSubmitting(false);
-            setEmail("");
         }
     };
 
@@ -47,8 +47,8 @@ const ForgotPassPage = () => {
     return (
         <div className="forgot-password">
             <Typography variant="h2" className="forgot-password__header">Forgot Password</Typography>
-            {error && <Typography ref={errorRef} variant="p2" className="forgot-password__error">{error}</Typography>}
-            {message && <Typography ref={successRef} variant="p2" className="forgot-password__message">{message}</Typography>}
+            {error && <Typography ref={errorRef} variant="p2" className="forgot-password__error" role="alert">{error}</Typography>}
+            {message && <Typography ref={successRef} variant="p2" className="forgot-password__message" role="status">{message}</Typography>}
 
             <form onSubmit={handleSubmit} className="forgot-password__form">
                 <div className="forgot-password__icon-wrapper">
@@ -59,7 +59,7 @@ const ForgotPassPage = () => {
                     placeholder="Email"
                     className="forgot-password__form-input"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                     required
                 />
 
