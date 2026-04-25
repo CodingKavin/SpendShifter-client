@@ -29,4 +29,5 @@ jobs:
         env:
           VITE_SUPABASE_URL: "https://placeholder-url.supabase.co"
           VITE_SUPABASE_ANON_KEY: "dummy-key-for-testing"
+          VITE_API_BASE_URL: "https://api.testing123.com/"
         run: npx vitest run
