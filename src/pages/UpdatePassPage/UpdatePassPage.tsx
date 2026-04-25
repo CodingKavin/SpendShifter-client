@@ -1,9 +1,9 @@
-import { useEffect, useState, useRef } from "react";
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useEffect, useState, useRef, type SubmitEvent, type ChangeEvent } from "react";
+import { useAuth } from "../../context/AuthContext";
 import { useNavigate, Navigate } from "react-router-dom";
-import Typography from "../../components/Typography/Typography.jsx";
+import Typography from "../../components/Typography/Typography";
 import Input from "../../components/Input/Input";
-import Button from "../../components/Button/Button.jsx";
+import Button from "../../components/Button/Button";
 import logo from "../../assets/Logo/SpendShifter_logo.svg";
 import {
   validatePassword,
@@ -11,24 +11,34 @@ import {
 } from "../../utils/validation.js";
 import "./UpdatePassPage.scss";
 
+interface PasswordFormData {
+  password: string;
+  confirmPassword: string;
+}
+
+interface PasswordFormErrors {
+  password: string;
+  confirmPassword: string;
+}
+
 const UpdatePassPage = () => {
   const { updatePassword, logout, isRecovering, isAuthenticated, loading } =
     useAuth();
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<PasswordFormData>({
     password: "",
     confirmPassword: "",
   });
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<PasswordFormErrors>({
     password: "",
     confirmPassword: "",
   });
-  const [submitError, setSubmitError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
-  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string>("");
+  const [successMessage, setSuccessMessage] = useState<string>("");
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
-  const errorRef = useRef(null);
-  const successRef = useRef(null);
+  const errorRef = useRef<HTMLDivElement>(null);
+  const successRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,7 +71,7 @@ const UpdatePassPage = () => {
     return <Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />;
   }
 
-  const handleChange = (field, value) => {
+  const handleChange = (field: keyof PasswordFormData, value: string) => {
     const updatedData = { ...formData, [field]: value };
     setFormData(updatedData);
 
@@ -78,11 +88,11 @@ const UpdatePassPage = () => {
     setErrors((prev) => ({ ...prev, [field]: error }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitting(true);
-    setSubmitError(null);
-    setSuccessMessage(null);
+    setSubmitError("");
+    setSuccessMessage("");
 
     const passwordError = validatePassword(formData.password);
     const confirmPasswordError = validateConfirmPassword(
@@ -90,14 +100,14 @@ const UpdatePassPage = () => {
       formData.confirmPassword,
     );
 
-    const newErrors = {
+    const newErrors: PasswordFormErrors = {
       password: passwordError,
       confirmPassword: confirmPasswordError,
     };
 
     setErrors(newErrors);
 
-    if (Object.values(newErrors).some((err) => err)) {
+    if (Object.values(newErrors).some((err: string) => err)) {
       setSubmitting(false);
       return;
     }
@@ -110,11 +120,9 @@ const UpdatePassPage = () => {
         await logout();
         navigate("/login");
       }, 2000);
-    } catch (error) {
+    } catch (error: any) {
       const safeMessage =
         error?.message ||
-        error?.error_description ||
-        error?.hint ||
         "Failed to update password.";
       setSubmitError(safeMessage);
       setSubmitting(false);
