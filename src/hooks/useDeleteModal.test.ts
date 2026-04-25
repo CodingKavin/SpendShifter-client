@@ -13,7 +13,7 @@ vi.mock("../utils/axios", () => ({
 describe("useDeleteModal Hook", () => {
   const mockSetData = vi.fn();
   const mockEndpoint = "/test-endpoint";
-  const mockItem = { id: "123", name: "Test Item" };
+  const mockItem = { id: "123", name: "Test Item", user_id: "mock-user-123" };
 
   beforeEach(() => {
     vi.clearAllMocks();
