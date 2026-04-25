@@ -14,9 +14,9 @@ const TableCardField: FC<TableCardFieldProps> = ({ label, children, className = 
       <Typography className="card__label" variant="h4">
         {label}
       </Typography>
-      <Typography className="card__value" variant="p2">
+      <div className="card__value">
         {children}
-      </Typography>
+      </div>
     </div>
   );
 };
