@@ -1,4 +1,4 @@
-import { useState, useRef, useLayoutEffect } from "react";
+import { useState, useRef, useLayoutEffect, type SubmitEvent, type ChangeEvent } from "react";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { Link } from "react-router-dom";
 import Typography from "../../components/Typography/Typography.jsx";
@@ -30,10 +30,10 @@ const SignupPage = () => {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const errorRef = useRef(null);
-  const successRef = useRef(null);
+  const errorRef = useRef<HTMLDivElement>(null);
+  const successRef = useRef<HTMLDivElement>(null);
 
-  const handleChange = (field, value) => {
+  const handleChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
 
     let error = "";
@@ -46,7 +46,7 @@ const SignupPage = () => {
     setErrors((prev) => ({ ...prev, [field]: error }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitting(true);
     setSubmitError("");
@@ -79,16 +79,14 @@ const SignupPage = () => {
         password: formData.password,
         options: {
           data: { full_name: formData.name.trim() },
-          redirectTo: "http://localhost:5173/",
+          redirectTo: window.location.origin,
         },
       });
       setFormData({ name: "", email: "", password: "", confirmPassword: "" });
       setSuccessMessage("Account created! Verify email before logging in.");
-    } catch (error) {
+    } catch (error: any) {
       const safeMessage =
         error?.message ||
-        error?.error_description ||
-        error?.hint ||
         "Signup failed";
       setSubmitError(safeMessage);
     } finally {
@@ -138,7 +136,7 @@ const SignupPage = () => {
           placeholder="Full Name"
           className="signup__form-input"
           value={formData.name}
-          onChange={(e) => handleChange("name", e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange("name", e.target.value)}
           error={errors.name}
           required
         />
@@ -147,7 +145,7 @@ const SignupPage = () => {
           placeholder="Email"
           className="signup__form-input"
           value={formData.email}
-          onChange={(e) => handleChange("email", e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange("email", e.target.value)}
           error={errors.email}
           required
         />
@@ -156,7 +154,7 @@ const SignupPage = () => {
           placeholder="Password"
           className="signup__form-input"
           value={formData.password}
-          onChange={(e) => handleChange("password", e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange("password", e.target.value)}
           error={errors.password}
           required
         />
@@ -165,7 +163,7 @@ const SignupPage = () => {
           placeholder="Confirm Password"
           className="signup__form-input"
           value={formData.confirmPassword}
-          onChange={(e) => handleChange("confirmPassword", e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange("confirmPassword", e.target.value)}
           error={errors.confirmPassword}
           required
         />
