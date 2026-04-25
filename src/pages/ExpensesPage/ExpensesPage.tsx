@@ -1,33 +1,34 @@
 import { useNavigate } from "react-router-dom";
-import { useSearch } from "../../hooks/useSearch.js";
+import { useSearch } from "../../hooks/useSearch";
 import { useEffect, useState } from "react";
-import { useDeleteModal } from "../../hooks/useDeleteModal.js";
-import api from "../../utils/axios.js";
-import TableCard from "../../components/TableCard/TableCard.jsx";
-import TableCardField from "../../components/TableCard/TableCardField.jsx";
-import TableCardActions from "../../components/TableCard/TableCardActions.jsx";
-import Typography from "../../components/Typography/Typography.jsx";
-import TablesHeader from "../../components/TablesHeader/TablesHeader.jsx";
-import TableRowHeader from "../../components/TableRowHeader/TableRowHeader.jsx";
-import DeleteModal from "../../components/DeleteModal/DeleteModal.jsx";
-import Button from "../../components/Button/Button.jsx";
+import { useDeleteModal } from "../../hooks/useDeleteModal";
+import type {Expense} from "../../types/types";
+import api from "../../utils/axios";
+import TableCard from "../../components/TableCard/TableCard";
+import TableCardField from "../../components/TableCard/TableCardField";
+import TableCardActions from "../../components/TableCard/TableCardActions";
+import Typography from "../../components/Typography/Typography";
+import TablesHeader from "../../components/TablesHeader/TablesHeader";
+import TableRowHeader from "../../components/TableRowHeader/TableRowHeader";
+import DeleteModal from "../../components/DeleteModal/DeleteModal";
+import Button from "../../components/Button/Button";
 import "./ExpensesPage.scss";
 
 const ExpensesPage = () => {
   const navigate = useNavigate();
   const goToAddExpense = () => navigate("/expenses/form/add");
-  const [expenses, setExpenses] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   const fetchExpenses = async () => {
     try {
       setLoading(true);
       setError("");
 
-      const response = await api.get("/expenses");
+      const response = await api.get<Expense[]>("/expenses");
       setExpenses(response.data || []);
-    } catch (err) {
+    } catch (err: any) {
       setError(
         err.response?.data?.message || err.message || "Failed to load expenses",
       );
@@ -47,21 +48,21 @@ const ExpensesPage = () => {
     openDeleteModal,
     closeDeleteModal,
     confirmDelete,
-  } = useDeleteModal("expenses", setExpenses);
+  } = useDeleteModal<Expense>("expenses", setExpenses);
 
-  const searchKeys = [
+  const searchKeys: (keyof Expense)[] = [
     "description",
     "category",
     "amount",
     "date",
     "recurrence",
   ];
-  const { searchString, setSearchString, filteredArray } = useSearch(
+  const { searchString, setSearchString, filteredArray } = useSearch<Expense>(
     expenses,
     searchKeys,
   );
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 10;
 
   useEffect(() => {
@@ -156,7 +157,7 @@ const ExpensesPage = () => {
 
             <TableCardField label="AMOUNT" className="expense-table__amount">
               <Typography variant="p2" className="card__value-text">
-                {`$${Number(expense.amount).toFixed(2)}`}
+                {`$${(Number(expense.amount) || 0).toFixed(2)}`}
               </Typography>
             </TableCardField>
 
