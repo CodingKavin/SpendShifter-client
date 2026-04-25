@@ -1,0 +1,109 @@
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import PublicOnlyRoute from "./components/PublicOnlyRoute/PublicOnlyRoute";
+import Navigation from "./components/Navigation/Navigation";
+import Footer from "./components/Footer/Footer";
+import SignupPage from "./pages/SignupPage/SignupPage";
+import LoginPage from "./pages/LoginPage/LoginPage";
+import ForgotPassPage from "./pages/ForgotPassPage/ForgotPassPage";
+import UpdatePassPage from "./pages/UpdatePassPage/UpdatePassPage";
+import DashboardPage from "./pages/DashboardPage/DashboardPage";
+import ExpensesPage from "./pages/ExpensesPage/ExpensesPage";
+import AddExpensePage from "./pages/AddExpensePage/AddExpensePage";
+import EditExpensePage from "./pages/EditExpensePage/EditExpensePage";
+import Typography from "./components/Typography/Typography";
+import "./App.scss";
+
+const App = () => {
+  const HomeRedirect = () => {
+    const { isAuthenticated, loading, isRecovering } = useAuth();
+    if (loading)
+      return (
+        <div className="loading-text">
+          <Typography variant="p2">Loading...</Typography>
+        </div>
+      );
+    if (isRecovering) {
+      return <Navigate to="/update-password" replace />;
+    }
+    return isAuthenticated ? (
+      <Navigate to="/dashboard" replace />
+    ) : (
+      <Navigate to="/login" replace />
+    );
+  };
+
+  return (
+      <BrowserRouter>
+        <Navigation />
+        <main>
+          <Routes>
+            <Route path="/" element={<HomeRedirect />} />
+            <Route
+              path="/signup"
+              element={
+                <PublicOnlyRoute>
+                  <SignupPage />
+                </PublicOnlyRoute>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <PublicOnlyRoute>
+                  <LoginPage />
+                </PublicOnlyRoute>
+              }
+            />
+            <Route
+              path="/forgot-password"
+              element={
+                <PublicOnlyRoute>
+                  <ForgotPassPage />
+                </PublicOnlyRoute>
+              }
+            />
+            <Route path="/update-password" element={<UpdatePassPage />} />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <DashboardPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/expenses"
+              element={
+                <ProtectedRoute>
+                  <ExpensesPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/expenses/form/add"
+              element={
+                <ProtectedRoute>
+                  <AddExpensePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/expenses/form/:id/edit"
+              element={
+                <ProtectedRoute>
+                  <EditExpensePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
+
+        <Footer />
+      </BrowserRouter>
+  );
+};
+
+export default App;

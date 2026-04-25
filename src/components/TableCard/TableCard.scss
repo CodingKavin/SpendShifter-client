@@ -53,6 +53,12 @@
     margin: 0;
     padding: 0;
     gap: 0;
+    font-size: pxToRem(13);
+    line-height: pxToRem(20);
+    @include tablet {
+      font-size: pxToRem(14);
+      line-height: pxToRem(22);
+    }
   }
 
   &__actions {
@@ -90,5 +96,11 @@
     overflow-wrap: break-word;
     word-break: break-word;
     hyphens: auto;
+    font-size: pxToRem(13);
+    line-height: pxToRem(20);
+    @include tablet {
+      font-size: pxToRem(14);
+      line-height: pxToRem(22);
+    }
   }
 }
