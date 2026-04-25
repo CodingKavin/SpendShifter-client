@@ -26,4 +26,7 @@ jobs:
         run: npm ci
 
       - name: Run Vitest
+        env:
+          VITE_SUPABASE_URL: "https://placeholder-url.supabase.co"
+          VITE_SUPABASE_ANON_KEY: "dummy-key-for-testing"
         run: npx vitest run
